@@ -139,12 +139,23 @@ namespace flashgg {
         const pat::PackedGenParticle * matchedGenPhoton() const { return dynamic_cast<const pat::PackedGenParticle *>( userCand( "matchedGenPhoton" ).get() ); };
         bool hasMatchedGenPhoton() const { return hasUserCand( "matchedGenPhoton" ); };
 
+
         void setGenMatchType( mcMatch_t typ ) { addUserInt( "genMatchType", ( int )typ ); };
         mcMatch_t  genMatchType() const { return ( hasUserInt( "genMatchType" ) ? ( mcMatch_t )userInt( "genMatchType" ) : kUnkown ); };
         bool  hasGenMatchType() const { return hasUserInt( "genMatchType" ); };
 
+        void setMatchedGenElectron( const edm::Ptr<pat::PackedGenParticle> pgp ) { addUserCand( "matchedGenElectron", pgp ); };
+        const pat::PackedGenParticle * matchedGenElectron() const { return dynamic_cast<const pat::PackedGenParticle *>( userCand( "matchedGenElectron" ).get() ); };
+        bool hasMatchedGenElectron() const { return hasUserCand( "matchedGenElectron" ); };
+
         void setPassElectronVeto( bool val ) { passElecVeto_ = val; };
         bool passElectronVeto() const { return passElecVeto_ ; };
+
+        void setMatchedElectron( bool val ) { hasMatchedElectron_ = val; };
+        bool matchedElectron() const { return hasMatchedElectron_ ; };
+
+        void setMatchedGsfTrackInnerMissingHits( int missingHits ) { matchedGsfTrackInnerMissingHits_=missingHits; };
+        bool matchedGsfTrackInnerMissingHits() const { return matchedGsfTrackInnerMissingHits_ ; };
 
         static int32_t encodeStatusFlags( bool isSaturated, bool isLeRecovered, bool isNeighRecovered, bool isGain1, bool isGain6, bool isWeired) {
             int32_t flags = 0;
@@ -199,6 +210,9 @@ namespace flashgg {
         bool passElecVeto_;
         std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> > extraChargedIsolations_;
         std::map<std::string, float> extraPhotonIsolations_, extraNeutralIsolations_;
+
+        bool hasMatchedElectron_;
+        int matchedGsfTrackInnerMissingHits_;
     };
 }
 
