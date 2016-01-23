@@ -144,6 +144,7 @@ namespace flashgg {
         unsigned int jetCollectionIndex_; // index for which jet collection corresponds to the vertex choice in this diphoton
 
         Point genPV_;
+
     };
 
 

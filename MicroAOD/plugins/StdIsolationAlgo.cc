@@ -52,7 +52,7 @@ namespace flashgg {
             const flashgg::VertexCandidateMap &mp )
     {
         if( ! chargedVetos_.empty() ) {
-            return utils_.pfIsoChgWrtVtx( pho, vtx, mp, conesize_, chargedVetos_[0], chargedVetos_[1], chargedVetos_[2] );
+            return utils_.pfIsoChgWrtVtx( pho, vtx, mp, conesize_, chargedVetos_[0], chargedVetos_[1], chargedVetos_[2] ).first;
         }
         return 0.;
         /// return utils_.pfIsoChgWrtVtx(pho,vtx,mp,conesize_,0.02,0.02,0.1);

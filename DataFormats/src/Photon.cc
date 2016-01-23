@@ -32,10 +32,15 @@ void Photon::ZeroVariables()
     pfChgIsoWrtWorstVtx04_ = 0.;
     pfChgIsoWrtWorstVtx03_ = 0.;
     pfChgIsoWrtChosenVtx02_ = 0.;
+    pfChgNumWrtWorstVtx04_ = 0.;
+    pfChgNumWrtWorstVtx03_ = 0.;
+    pfChgNumWrtChosenVtx02_ = 0.;
     ESEffSigmaRR_ = 0.;
     sigEOverE_ = 0.;
     pfChgIso03_.clear();
     pfChgIso02_.clear();
+    pfChgNum03_.clear();
+    pfChgNum02_.clear();
     phoIdMvaD_.clear();
     passElecVeto_ = false;
 }
@@ -206,44 +211,6 @@ bool Photon::hasEnergyAtStep( std::string key ) const
 {
     return hasUserData( key );
 }
-
-
-float const Photon::findVertex0Float( const std::map<edm::Ptr<reco::Vertex>, float> &mp ) const
-{
-    for( std::map<edm::Ptr<reco::Vertex>, float>::const_iterator it = mp.begin(); it != mp.end(); ++it ) {
-        if( it->first.key() == 0 ) {
-            return  it->second;
-        }
-    }
-
-    throw cms::Exception( "Missing Data" ) << "could not find value for vertex 0\n";;
-
-    return 0.;
-}
-
-float const Photon::findVertexFloat( const edm::Ptr<reco::Vertex> &vtx, const std::map<edm::Ptr<reco::Vertex>, float> &mp, bool lazy ) const
-{
-    lazy = lazy && ( vtx.id() == edm::ProductID( 0, 0 ) );
-    for( std::map<edm::Ptr<reco::Vertex>, float>::const_iterator it = mp.begin(); it != mp.end(); ++it ) {
-        if( ( lazy && it->first.key() == vtx.key() ) || it->first == vtx ) {
-            return  it->second;
-        }
-    }
-
-    throw cms::Exception( "Missing Data" ) << "could not find value for vertex " << vtx.key() << " " << vtx.id() << " lazy search: " << lazy <<  "\n";;
-
-    return 0.;
-}
-
-float const Photon::findWorstIso( const std::map<edm::Ptr<reco::Vertex>, float> &mp ) const
-{
-    float ret = std::numeric_limits<float>::min();
-    for( auto it : mp ) {
-        ret = std::max( ret, it.second );
-    }
-    return ret;
-}
-
 
 void Photon::updateEnergy( std::string key, float val )
 {

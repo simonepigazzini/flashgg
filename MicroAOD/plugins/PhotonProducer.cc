@@ -240,21 +240,23 @@ namespace flashgg {
 
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );
 
-            std::map<edm::Ptr<reco::Vertex>, float> isomap04 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.4, 0.02, 0.02, 0.1 );
-            std::map<edm::Ptr<reco::Vertex>, float> isomap03 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.3, 0.02, 0.02, 0.1 );
-            fg.setpfChgIso04( isomap04 );
-            fg.setpfChgIso03( isomap03 );
-            std::map<edm::Ptr<reco::Vertex>, float> &ref_isomap04 = isomap04;
-            std::map<edm::Ptr<reco::Vertex>, float> &ref_isomap03 = isomap03;
-            float pfChgIsoWrtWorstVtx04 =  phoTools_.pfIsoChgWrtWorstVtx( ref_isomap04 );
-            float pfChgIsoWrtWorstVtx03 =  phoTools_.pfIsoChgWrtWorstVtx( ref_isomap03 );
-            fg.setpfChgIsoWrtWorstVtx04( pfChgIsoWrtWorstVtx04 );
-            fg.setpfChgIsoWrtWorstVtx03( pfChgIsoWrtWorstVtx03 );
+            auto isomap04 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.4, 0.02, 0.02, 0.1 );
+            auto isomap03 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.3, 0.02, 0.02, 0.1 );
+            fg.setpfChgIso04( isomap04.first );
+            fg.setpfChgIso03( isomap03.first );
+            fg.setpfChgNum04( isomap04.second );
+            fg.setpfChgNum03( isomap03.second );
+            fg.setpfChgIsoWrtWorstVtx04( phoTools_.pfIsoChgWrtWorstVtx( isomap04.second ) );
+            fg.setpfChgIsoWrtWorstVtx03( phoTools_.pfIsoChgWrtWorstVtx( isomap03.second ) );
+            fg.setpfChgNumWrtWorstVtx04( phoTools_.pfIsoChgWrtWorstVtx( isomap04.second ) );
+            fg.setpfChgNumWrtWorstVtx03( phoTools_.pfIsoChgWrtWorstVtx( isomap03.second ) );
 
             // This map is needed for the photon preselection
-            std::map<edm::Ptr<reco::Vertex>, float> isomap02 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.2, 0.02, 0.02, 0.1 );
-            fg.setpfChgIso02( isomap02 );
+            auto isomap02 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.2, 0.02, 0.02, 0.1 );
+            fg.setpfChgIso02( isomap02.first );
             fg.setpfChgIsoWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
+            fg.setpfChgNum02( isomap02.second );
+            fg.setpfChgNumWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
 
             float pfPhoIso04 = phoTools_.pfCaloIso( pp, pfcandidates->ptrs(), 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx );
             float pfPhoIso03 = phoTools_.pfCaloIso( pp, pfcandidates->ptrs(), 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx );
