@@ -43,6 +43,8 @@ void Photon::ZeroVariables()
     pfChgNum02_.clear();
     phoIdMvaD_.clear();
     passElecVeto_ = false;
+    hasMatchedElectron_=false;
+    matchedGsfTrackInnerMissingHits_=-1;
 }
 
 Photon::Photon( const pat::Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
