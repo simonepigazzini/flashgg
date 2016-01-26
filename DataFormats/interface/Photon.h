@@ -182,7 +182,7 @@ namespace flashgg {
         bool matchedElectron() const { return hasMatchedElectron_ ; };
 
         void setMatchedGsfTrackInnerMissingHits( int missingHits ) { matchedGsfTrackInnerMissingHits_=missingHits; };
-        bool matchedGsfTrackInnerMissingHits() const { return matchedGsfTrackInnerMissingHits_ ; };
+        int matchedGsfTrackInnerMissingHits() const { return matchedGsfTrackInnerMissingHits_ ; };
 
         static int32_t encodeStatusFlags( bool isSaturated, bool isLeRecovered, bool isNeighRecovered, bool isGain1, bool isGain6, bool isWeired) {
             int32_t flags = 0;
