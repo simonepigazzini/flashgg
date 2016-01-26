@@ -97,7 +97,7 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                       )
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
-process.flashggDiPhotons.VertexSelectorName = "FlashggTracksMultiplicityVertexSelector"
+#process.flashggDiPhotons.VertexSelectorName = "FlashggTracksMultiplicityVertexSelector"
 
 # NEEDED FOR ANYTHING PRIOR TO reMiniAOD
 #process.weightsCount.pileupInfo = "addPileupInfo"
