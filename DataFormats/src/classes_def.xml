@@ -95,7 +95,12 @@
 <class name="edm::Ptr<flashgg::Photon>"/>
 <class name="std::vector<flashgg::Photon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
-<class name="flashgg::DiPhotonCandidate" ClassVersion="11">
+<class name="std::map<edm::Ptr<reco::Vertex>, float>"/>
+<class name="std::map<edm::Ptr<reco::Vertex>, std::vector<int> >"/>
+<class name="flashgg::DiPhotonCandidate" ClassVersion="14">
+ <version ClassVersion="14" checksum="3312785065"/>
+ <version ClassVersion="13" checksum="2636783324"/>
+ <version ClassVersion="12" checksum="2454285356"/>
   <version ClassVersion="10" checksum="2243573479"/>
   <version ClassVersion="11" checksum="3086156793"/>
 </class>

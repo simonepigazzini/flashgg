@@ -15,4 +15,6 @@
     "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12" : ["76X_mcRun2_asymptotic_v12"],
     "RunIIFall15MiniAODv2-PU25nsData2015v1_magnetOff_76X_mcRun2_asymptotic_v12" : ["76X_mcRun2_asymptotic_v12"],
     "bmarzocc-RSGravToGG_kMpl-02_M-750_TuneCUEP8M1_13TeV-pythia8_magnetOffBS0T_76X_mcRun2_asymptotic_v12_MiniAODSIM_v2-710991207d859d6bf12b4f5314f87b8" : ["76X_mcRun2_asymptotic_v12"]
+    "RunIISpring15DR74-0TPU25nsData2015v1_magnetOffBS0T_74X_mcRun2_0T_v0" : ["74X_mcRun2_0T_v0"],
+    "bmarzocc-RSGravToGG_kMpl-02_M-750_TuneCUEP8M1_13TeV-pythia8_magnetOffBS0T_74X_mcRun2_0T_v0_MiniAODSIM-8d3d38d74b30116ecffda2723678978" : ["74X_mcRun2_0T_v0"]
 }
