@@ -181,6 +181,9 @@ namespace flashgg {
         void setMatchedElectron( bool val ) { hasMatchedElectron_ = val; };
         bool matchedElectron() const { return hasMatchedElectron_ ; };
 
+        void setMatchedEleVtx( math::XYZPointF vtx ) { eleVtx_ = vtx; };
+        math::XYZPointF getMatchedEleVtx() const { return eleVtx_; };
+        
         void setMatchedGsfTrackInnerMissingHits( int missingHits ) { matchedGsfTrackInnerMissingHits_=missingHits; };
         int matchedGsfTrackInnerMissingHits() const { return matchedGsfTrackInnerMissingHits_ ; };
 
@@ -283,6 +286,7 @@ namespace flashgg {
         std::map<std::string, float> extraPhotonIsolations_, extraNeutralIsolations_;
 
         bool hasMatchedElectron_;
+        math::XYZPointF eleVtx_;
         int matchedGsfTrackInnerMissingHits_;
     };
 }

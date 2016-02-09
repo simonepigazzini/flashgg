@@ -50,6 +50,7 @@ namespace flashgg {
         void setVtxProbMVA( float val ) { vtxprobmva_ = val; }
         void setVertexIndex( int val ) { vertex_index_ = val; }
 
+        void setVNTracks( std::vector<int> vval ) { vn_tracks_ = vval; }
         void setVLogSumPt2( std::vector<float> vval ) { vlogsumpt2_ = vval; }
         void setVPtBal( std::vector<float> vval ) { vptbal_ = vval; }
         void setVPtAsym( std::vector<float> vval ) { vptasym_ = vval; }
@@ -78,6 +79,7 @@ namespace flashgg {
         int vertexIndex() const { return vertex_index_; }
 
         unsigned int nVtxInfoSize() const { return ( vlogsumpt2_.size() ) ;}
+        int   nTracks( unsigned int iVtx ) const { return ( iVtx < vn_tracks_.size() ) ? vn_tracks_.at( iVtx ) : -9999. ;}
         float logSumPt2( unsigned int iVtx ) const { return ( iVtx < vlogsumpt2_.size() ) ? vlogsumpt2_.at( iVtx ) : -9999. ;}
         float ptBal( unsigned int iVtx ) const  { return iVtx < vptbal_.size() ? vptbal_.at( iVtx ) : -9999. ;}
         float ptAsym( unsigned int iVtx ) const  { return iVtx < vptasym_.size() ? vptasym_.at( iVtx ) : -9999. ; }
@@ -136,6 +138,7 @@ namespace flashgg {
         float dZ2_;
         float vtxprobmva_;
 
+        std::vector<int>   vn_tracks_;
         std::vector<float> vlogsumpt2_;
         std::vector<float> vptbal_;
         std::vector<float> vptasym_;

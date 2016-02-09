@@ -1,4 +1,3 @@
-
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -200,13 +199,14 @@ namespace flashgg {
 
             //electron matching
             for (std::vector<pat::Electron>::const_iterator ele = electronHandle->begin(); ele!=electronHandle->end(); ele++)
-                {
-                    //match electron to supercluster
-                    if(ele->superCluster() != pp->superCluster()) continue;
-                    fg.setMatchedElectron(true);
-                    fg.setMatchedGsfTrackInnerMissingHits(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS));
-                }
-
+            {
+                //match electron to supercluster
+                if(ele->superCluster() != pp->superCluster()) continue;
+                fg.setMatchedElectron(true);
+                fg.setMatchedGsfTrackInnerMissingHits(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS));
+                fg.setMatchedEleVtx(ele->trackPositionAtVtx());
+            }
+            
             // Gen matching
             if( ! evt.isRealData() ) {
                 unsigned int best = INT_MAX;

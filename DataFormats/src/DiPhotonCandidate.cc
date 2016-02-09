@@ -93,27 +93,46 @@ void DiPhotonCandidate::computeVtxsExtras(const flashgg::VertexCandidateMap vtxc
                 leadingPhoton()->associatedPackedPFCandidates();
             edm::RefVector<pat::PackedCandidateCollection> associatedSublead =
                 subLeadingPhoton()->associatedPackedPFCandidates();
-            int nass = 0;            
+            //---keep associated electrons for Zee
+            edm::Ptr<pat::PackedCandidate> leadEle;
+            int nass = 0;
             for( auto& associated : associatedLead ) {
                 edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated );
                 if( associatedPtr == pfcand )
                 {
+                    if( abs(associatedPtr->pdgId()) == 11)
+                        leadEle = pfcand;
                     nass++;
-                    break;
                 }
             }
+            edm::Ptr<pat::PackedCandidate> subleadEle=leadEle;
             for( auto& associated : associatedSublead ) {
                 edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated );
                 if( associatedPtr == pfcand )
                 {
+                    if( abs(associatedPtr->pdgId()) == 11)
+                        subleadEle = pfcand;                        
                     nass++;
-                    break;
                 }
             }
+            //---keep Zee vtx
+            if( leadEle.isNonnull() && subleadEle.isNonnull() && leadEle != subleadEle )
+            {
+                cout << "FOUND" << endl;
+                cout << leadingPhoton()->pt() << "  " << leadEle->pt() << "  " << deltaR( leadEle->momentum().Eta(),
+                                                                                          leadEle->momentum().Phi(),
+                                                                                          eta(), phi() ) << endl;
+                cout << subLeadingPhoton()->pt() << "  " << subleadEle->pt() << "  " << deltaR( subleadEle->momentum().Eta(),
+                                                                                                subleadEle->momentum().Phi(),
+                                                                                                eta(), phi() ) <<endl;
+            }
+
             if( nass > 0 )
                 continue;
-
+            
+            //---BDT variables
             sumEt2 += pfcand->et2();
+            
             //---fill cones
             float dR_dipho = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
                                      eta(), phi() );
