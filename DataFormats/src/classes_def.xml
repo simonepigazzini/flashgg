@@ -86,16 +86,25 @@
 <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonTagBase> >"/>
 <class name="edm::Ptr<reco::Vertex>"/> 
 <class name="std::vector<edm::Ptr<reco::Vertex> >"/> 
-<class name="flashgg::Photon" ClassVersion="10">
+<class name="flashgg::Photon" ClassVersion="13">
+ <version ClassVersion="13" checksum="3555819789"/>
+ <version ClassVersion="12" checksum="1309919245"/>
   <version ClassVersion="10" checksum="563539605"/>
+  <version ClassVersion="11" checksum="303062741"/>
 </class>
 <class name="edm::Ptr<flashgg::Photon>"/>
 <class name="std::vector<flashgg::Photon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
-<class name="flashgg::DiPhotonCandidate" ClassVersion="11">
+<class name="std::map<edm::Ptr<reco::Vertex>, float>"/>
+<class name="std::map<edm::Ptr<reco::Vertex>, std::vector<int> >"/>
+<class name="flashgg::DiPhotonCandidate" ClassVersion="14">
+ <version ClassVersion="14" checksum="3312785065"/>
+ <version ClassVersion="13" checksum="2636783324"/>
+ <version ClassVersion="12" checksum="2454285356"/>
   <version ClassVersion="10" checksum="2243573479"/>
   <version ClassVersion="11" checksum="3086156793"/>
 </class>
+
 <class name="std::vector<flashgg::DiPhotonCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
 <class name="edm::Ptr<flashgg::DiPhotonCandidate>"/>
@@ -165,8 +174,12 @@
 <class name="edm::Ptr<flashgg::Jet>"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,float>"/>
 <class name="std::pair<edm::Ptr<reco::Vertex>,float>"/>
+<class name="std::map<edm::Ptr<reco::Vertex>,int>"/>
+<class name="std::pair<edm::Ptr<reco::Vertex>,int>"/>
 <class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
 <class name="std::pair<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
+<class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,int>>"/>
+<class name="std::pair<std::string,std::map<edm::Ptr<reco::Vertex>,int>>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
 <class name="std::vector<std::vector<flashgg::Jet> >"/>
 <class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>

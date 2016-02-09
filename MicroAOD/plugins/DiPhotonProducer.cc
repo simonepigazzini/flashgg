@@ -91,7 +91,7 @@ namespace flashgg {
             evt.getByToken( genPartToken_, genParticles );
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 ) {
+                if( pdgid == 25 || pdgid == 39 || pdgid == 22 ) {
                     higgsVtx = genParticles->ptrAt( genLoop )->vertex();
                     break;
                 }

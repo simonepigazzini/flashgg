@@ -38,11 +38,11 @@ namespace flashgg {
         edm::EDGetTokenT<reco::ConversionCollection> convToken_;
         edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
         edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
+        edm::EDGetTokenT<double> rhoFixedGrid_;
 
         EffectiveAreas effectiveAreas_;
         //        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVAMediumIdMapToken_;
         //        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVATightIdMapToken_;
-        edm::InputTag rhoFixedGrid_;
     };
 
     ElectronProducer::ElectronProducer( const ParameterSet &iConfig ):
@@ -51,13 +51,11 @@ namespace flashgg {
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<InputTag>( "convTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
         mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) ),
+        rhoFixedGrid_(consumes<double>(iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
         effectiveAreas_((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath())
         //        eleMVAMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAMediumIdMap"))),
         //        eleMVATightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATightIdMap")))
-    {
-        rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
-        
-
+    {     
         produces<vector<flashgg::Electron> >();
         // nontrigmva_ = 0;
     }
@@ -72,7 +70,7 @@ namespace flashgg {
 
         double rho=0;
         Handle<double> rhoHandle;
-        evt.getByLabel( rhoFixedGrid_, rhoHandle );
+        evt.getByToken( rhoFixedGrid_, rhoHandle );
         rho = *rhoHandle;
 
         Handle<View<reco::Vertex> >  vtxs;

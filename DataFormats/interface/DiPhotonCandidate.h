@@ -1,6 +1,7 @@
 #ifndef FLASHgg_DiPhotonCandidate_h
 #define FLASHgg_DiPhotonCandidate_h
 
+#include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
 #include "DataFormats/Candidate/interface/ShallowCloneCandidate.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
@@ -10,7 +11,7 @@
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "DataFormats/Math/interface/Point3D.h"
 
-
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 
 namespace flashgg {
 
@@ -111,6 +112,12 @@ namespace flashgg {
         Point genPV() const { return genPV_; }
         void setGenPV( const Point genpv ) { genPV_ = genpv; }
 
+        //---ZeroTesla mod
+        void                                 computeVtxsExtras(const flashgg::VertexCandidateMap vtxcandmap, float coneSize=1);
+        std::vector<edm::Ptr<reco::Vertex> > getVtxs() { return vVtxPtr_; };
+        float                                getVtxSumEt2(edm::Ptr<reco::Vertex> vtx) { return vtxsSumEt2Map_[vtx]; };
+        std::vector<int>                     getVtxCones(edm::Ptr<reco::Vertex> vtx) { return vtxsConesMap_[vtx]; };
+
     private:
         
         edm::Ptr<reco::Vertex> vertex_;
@@ -137,6 +144,8 @@ namespace flashgg {
         std::vector<float> vmva_value_;
         std::vector<unsigned int> vmva_sortedindex_;
         std::vector<edm::Ptr<reco::Vertex> > vVtxPtr_;
+        std::map<edm::Ptr<reco::Vertex>, float> vtxsSumEt2Map_;
+        std::map<edm::Ptr<reco::Vertex>, std::vector<int> > vtxsConesMap_;
 
         flashgg::SinglePhotonView viewPho1_;
         flashgg::SinglePhotonView viewPho2_;
@@ -144,6 +153,7 @@ namespace flashgg {
         unsigned int jetCollectionIndex_; // index for which jet collection corresponds to the vertex choice in this diphoton
 
         Point genPV_;
+
     };
 
 

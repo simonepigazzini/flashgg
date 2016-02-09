@@ -37,14 +37,15 @@ bool PhotonIdUtils::vetoPackedCand( const pat::Photon &photon, const edm::Ptr<pa
     return ( nass > 0 );
 }
 
-float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
-                                     const edm::Ptr<reco::Vertex> vtx,
-                                     const flashgg::VertexCandidateMap vtxcandmap,
-                                     float coneSize, float coneVetoBarrel, float coneVetoEndcap,
-                                     float ptMin
-                                   )
+pair<float, int> PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
+                                                const edm::Ptr<reco::Vertex> vtx,
+                                                const flashgg::VertexCandidateMap vtxcandmap,
+                                                float coneSize, float coneVetoBarrel, float coneVetoEndcap,
+                                                float ptMin
+    )
 {
     float isovalue = 0;
+    int isonum = 0;
 
     float coneVeto = 0;
     if( photon->isEB() )      { coneVeto = coneVetoBarrel; }
@@ -57,7 +58,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
                                );
 
     auto mapRange = std::equal_range( vtxcandmap.begin(), vtxcandmap.end(), vtx, flashgg::compare_with_vtx() );
-    if( mapRange.first == mapRange.second ) { return -1.; } // no entries for this vertex
+    if( mapRange.first == mapRange.second ) { return make_pair(-1., -1); } // no entries for this vertex
     for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ ) {
         edm::Ptr<pat::PackedCandidate> pfcand = pair_iter->second;
 
@@ -73,46 +74,33 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
         if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) { continue; }
 
         isovalue += pfcand->pt();
+        ++isonum;
     }
-    return isovalue;
+    return make_pair(isovalue, isonum);
 
 }
 
 
-map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &photon,
-        const std::vector<edm::Ptr<reco::Vertex> > &vertices,
-        const flashgg::VertexCandidateMap vtxcandmap,
-        float coneSize, float coneVetoBarrel, float coneVetoEndcap,
-        float ptMin )
+pair<map<edm::Ptr<reco::Vertex>, float>, map<edm::Ptr<reco::Vertex>, int> >
+PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &photon,
+                                  const std::vector<edm::Ptr<reco::Vertex> > &vertices,
+                                  const flashgg::VertexCandidateMap vtxcandmap,
+                                  float coneSize, float coneVetoBarrel, float coneVetoEndcap,
+                                  float ptMin )
 {
     map<edm::Ptr<reco::Vertex>, float> isomap;
+    map<edm::Ptr<reco::Vertex>, int> nummap;
     isomap.clear();
 
     for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
 
-        float iso = pfIsoChgWrtVtx( photon, vertices[iv], vtxcandmap, coneSize, coneVetoBarrel, coneVetoEndcap, ptMin );
-        isomap.insert( make_pair( vertices[iv], iso ) );
+        pair<float, int> iso = pfIsoChgWrtVtx( photon, vertices[iv], vtxcandmap, coneSize, coneVetoBarrel, coneVetoEndcap, ptMin );
+        isomap.insert( make_pair( vertices[iv], iso.first ) );
+        nummap.insert( make_pair( vertices[iv], iso.second ) );
     }
 
-    return isomap;
+    return make_pair(isomap, nummap);
 }
-
-
-
-float PhotonIdUtils::pfIsoChgWrtWorstVtx( map<edm::Ptr<reco::Vertex>, float> &vtxIsoMap )
-{
-    float MaxValueMap = -1000;
-    float itValue = 0;
-
-    for( map<edm::Ptr<reco::Vertex>, float>::iterator it = vtxIsoMap.begin(); it != vtxIsoMap.end(); ++it ) {
-        itValue = it->second;
-        if( itValue > MaxValueMap ) { MaxValueMap = itValue; }
-    }
-
-    return MaxValueMap;
-}
-
-
 
 float PhotonIdUtils::pfCaloIso( const edm::Ptr<pat::Photon> &photon,
                                 const std::vector<edm::Ptr<pat::PackedCandidate> > &pfcandidates,
