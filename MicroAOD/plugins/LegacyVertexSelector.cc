@@ -763,7 +763,7 @@ namespace flashgg {
 
         for( unsigned int jj = 0; jj < sorter.size(); jj++ ) {
 
-            if( nVtxSaveInfo != -1 && vlogsumpt2_.size() < abs(nVtxSaveInfo) ) {
+            if( nVtxSaveInfo == -1 || vlogsumpt2_.size() < abs(nVtxSaveInfo) ) {
 
                 vmva_sortedindex_.push_back( sorter[jj].first );
                 vn_tracks_.push_back( vn_tracks[sorter[jj].first] );
@@ -976,7 +976,7 @@ namespace flashgg {
 
         for( unsigned int jj = 0; jj < sorter.size(); jj++ ) {
 
-            if( nVtxSaveInfo != -1 && vlogsumpt2_.size() < abs(nVtxSaveInfo) ) {
+            if( nVtxSaveInfo == -1 || vlogsumpt2_.size() < abs(nVtxSaveInfo) ) {
 
                 vmva_sortedindex_.push_back( sorter[jj].first );
                 vn_tracks_.push_back( vn_tracks[sorter[jj].first] );

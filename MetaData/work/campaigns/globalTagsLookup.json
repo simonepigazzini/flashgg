@@ -17,5 +17,6 @@
     "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12" : ["76X_mcRun2_asymptotic_v12"],
     "RunIIFall15MiniAODv2-PU25nsData2015v1_magnetOff_76X_mcRun2_asymptotic_v12" : ["76X_mcRun2_asymptotic_v12"],
     "RunIISpring15DR74-0TPU25nsData2015v1_magnetOffBS0T_74X_mcRun2_0T_v0" : ["74X_mcRun2_0T_v0"],
-    "RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1" : ["76X_mcRun2_0T_v1"]
+    "RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1" : ["76X_mcRun2_0T_v1"],
+    "RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T_76X_mcRun2_0T_v1" : ["76X_mcRun2_0T_v1"]
 }
