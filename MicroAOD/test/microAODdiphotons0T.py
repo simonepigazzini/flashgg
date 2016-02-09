@@ -75,14 +75,20 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 
 ### 76X ###
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
-#"/store/mc/RunIIFall15MiniAODv1/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/047F5248-5AAA-E511-8219-02163E017790.root"
-#"/store/mc/RunIIFall15DR76/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1/00000/0C6C1B51-9198-E511-B305-002590747D94.root"
-"/store/mc/RunIISpring15DR74/DYToEE_NNPDF30_13TeV-powheg-pythia8/MINIAODSIM/0TPU25nsData2015v1_magnetOffBS0T_74X_mcRun2_0T_v0-v2/00000/0E666F83-8FBD-E511-BCF9-02163E012FC9.root"
-#"/store/data/Run2015D/DoubleEG/MINIAOD/16Dec2015-v2/00000/000298CD-87A6-E511-9E56-002590593878.root"
-#    "/store/mc/RunIIFall15MiniAODv2/GJet_Pt-15to6000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/PU25nsData2015v1_magnetOff_76X_mcRun2_asymptotic_v12-v1/00000/7247044E-8BB8-E511-90BC-002590DE6E52.root"
-#"file:grav.root"
-))
+process.source = cms.Source("PoolSource",
+                            inputCommands = cms.untracked.vstring(
+                                "keep *",
+                                "drop *_slimmedMETsNoHF_*_*"
+                            ),
+                            fileNames=cms.untracked.vstring(
+                                #"/store/mc/RunIIFall15MiniAODv1/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/047F5248-5AAA-E511-8219-02163E017790.root"
+                                #"/store/mc/RunIIFall15DR76/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1/00000/0C6C1B51-9198-E511-B305-002590747D94.root"
+                                #"/store/mc/RunIISpring15DR74/DYToEE_NNPDF30_13TeV-powheg-pythia8/MINIAODSIM/0TPU25nsData2015v1_magnetOffBS0T_74X_mcRun2_0T_v0-v2/00000/0E666F83-8FBD-E511-BCF9-02163E012FC9.root"
+                                #"/store/data/Run2015D/DoubleEG/MINIAOD/16Dec2015-v2/00000/000298CD-87A6-E511-9E56-002590593878.root"
+                                #    "/store/mc/RunIIFall15MiniAODv2/GJet_Pt-15to6000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/PU25nsData2015v1_magnetOff_76X_mcRun2_asymptotic_v12-v1/00000/7247044E-8BB8-E511-90BC-002590DE6E52.root"
+                                #"file:grav.root"
+                                "/store/data/Run2015D/DoubleEG_0T/MINIAOD/27Jan2016-v2/70000/007648DA-5DC7-E511-A7FF-0025905C2CE4.root"
+                            ))
 
 ########### 
 
