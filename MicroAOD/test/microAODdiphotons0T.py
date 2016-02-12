@@ -45,7 +45,8 @@ process.source = cms.Source("PoolSource",
                                 #"/store/data/Run2015D/DoubleEG/MINIAOD/16Dec2015-v2/00000/000298CD-87A6-E511-9E56-002590593878.root"
                                 #    "/store/mc/RunIIFall15MiniAODv2/GJet_Pt-15to6000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/PU25nsData2015v1_magnetOff_76X_mcRun2_asymptotic_v12-v1/00000/7247044E-8BB8-E511-90BC-002590DE6E52.root"
                                 #"file:grav.root"
-                                "/store/mc/RunIIFall15MiniAODv2/RSGravToGG_kMpl-001_M-750_TuneCUEP8M1_13TeV-pythia8/MINIAODSIM/PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/20000/143182C1-BACA-E511-934D-0CC47A78A3D8.root",
+                                #"/store/mc/RunIIFall15MiniAODv2/RSGravToGG_kMpl-001_M-750_TuneCUEP8M1_13TeV-pythia8/MINIAODSIM/PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/20000/143182C1-BACA-E511-934D-0CC47A78A3D8.root",
+                                "/store/mc/RunIIFall15MiniAODv1/DYToEE_NNPDF30_13TeV-powheg-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/005667A9-CBB8-E511-86C3-90B11C066D31.root"
                                 #"/store/data/Run2015D/DoubleEG_0T/MINIAOD/27Jan2016-v2/70000/007648DA-5DC7-E511-A7FF-0025905C2CE4.root"
                             ))
 
@@ -64,8 +65,8 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
-# process.flashggDiPhotonsTrkCount = flashggDiPhotons.clone()
-# process.flashggDiPhotonsTrkCount.VertexSelectorName = "FlashggTracksMultiplicityVertexSelector"
+process.flashggDiPhotonsTrkCount = flashggDiPhotons.clone()
+process.flashggDiPhotonsTrkCount.VertexSelectorName = "FlashggTracksMultiplicityVertexSelector"
 
 # NEEDED FOR ANYTHING PRIOR TO reMiniAOD
 #process.weightsCount.pileupInfo = "addPileupInfo"
@@ -86,7 +87,7 @@ process.out = cms.OutputModule("PoolOutputModule",
 # All jets are now handled in MicroAODCustomize.py
 # Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
 
-process.p = cms.Path(process.flashggMicroAODSequence)
+process.p = cms.Path(process.flashggMicroAODSequence+process.flashggDiPhotonsTrkCount)
 process.e = cms.EndPath(process.out)
 
 # Uncomment these lines to run the example commissioning module and send its output to root
