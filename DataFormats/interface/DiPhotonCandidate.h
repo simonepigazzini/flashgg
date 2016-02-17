@@ -1,6 +1,7 @@
 #ifndef FLASHgg_DiPhotonCandidate_h
 #define FLASHgg_DiPhotonCandidate_h
 
+#include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
 #include "DataFormats/Candidate/interface/ShallowCloneCandidate.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
@@ -10,7 +11,7 @@
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "DataFormats/Math/interface/Point3D.h"
 
-
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 
 namespace flashgg {
 
@@ -49,6 +50,7 @@ namespace flashgg {
         void setVtxProbMVA( float val ) { vtxprobmva_ = val; }
         void setVertexIndex( int val ) { vertex_index_ = val; }
 
+        void setVNTracks( std::vector<int> vval ) { vn_tracks_ = vval; }
         void setVLogSumPt2( std::vector<float> vval ) { vlogsumpt2_ = vval; }
         void setVPtBal( std::vector<float> vval ) { vptbal_ = vval; }
         void setVPtAsym( std::vector<float> vval ) { vptasym_ = vval; }
@@ -77,6 +79,7 @@ namespace flashgg {
         int vertexIndex() const { return vertex_index_; }
 
         unsigned int nVtxInfoSize() const { return ( vlogsumpt2_.size() ) ;}
+        int   nTracks( unsigned int iVtx ) const { return ( iVtx < vn_tracks_.size() ) ? vn_tracks_.at( iVtx ) : -9999. ;}
         float logSumPt2( unsigned int iVtx ) const { return ( iVtx < vlogsumpt2_.size() ) ? vlogsumpt2_.at( iVtx ) : -9999. ;}
         float ptBal( unsigned int iVtx ) const  { return iVtx < vptbal_.size() ? vptbal_.at( iVtx ) : -9999. ;}
         float ptAsym( unsigned int iVtx ) const  { return iVtx < vptasym_.size() ? vptasym_.at( iVtx ) : -9999. ; }
@@ -111,6 +114,12 @@ namespace flashgg {
         Point genPV() const { return genPV_; }
         void setGenPV( const Point genpv ) { genPV_ = genpv; }
 
+        //---ZeroTesla mod
+        void                                 computeVtxsExtras(const flashgg::VertexCandidateMap vtxcandmap, float coneSize=1);
+        std::vector<edm::Ptr<reco::Vertex> > getVtxs() { return vVtxPtr_; };
+        float                                getVtxSumEt2(edm::Ptr<reco::Vertex> vtx) { return vtxsSumEt2Map_[vtx]; };
+        std::vector<int>                     getVtxCones(edm::Ptr<reco::Vertex> vtx) { return vtxsConesMap_[vtx]; };
+
     private:
         
         edm::Ptr<reco::Vertex> vertex_;
@@ -129,6 +138,7 @@ namespace flashgg {
         float dZ2_;
         float vtxprobmva_;
 
+        std::vector<int>   vn_tracks_;
         std::vector<float> vlogsumpt2_;
         std::vector<float> vptbal_;
         std::vector<float> vptasym_;
@@ -137,6 +147,8 @@ namespace flashgg {
         std::vector<float> vmva_value_;
         std::vector<unsigned int> vmva_sortedindex_;
         std::vector<edm::Ptr<reco::Vertex> > vVtxPtr_;
+        std::map<edm::Ptr<reco::Vertex>, float> vtxsSumEt2Map_;
+        std::map<edm::Ptr<reco::Vertex>, std::vector<int> > vtxsConesMap_;
 
         flashgg::SinglePhotonView viewPho1_;
         flashgg::SinglePhotonView viewPho2_;
@@ -144,6 +156,7 @@ namespace flashgg {
         unsigned int jetCollectionIndex_; // index for which jet collection corresponds to the vertex choice in this diphoton
 
         Point genPV_;
+
     };
 
 

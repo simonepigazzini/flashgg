@@ -13,10 +13,10 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
-process.GlobalTag = GlobalTag(process.GlobalTag, '76X_mcRun2_asymptotic_v13')
+process.GlobalTag = GlobalTag(process.GlobalTag, '76X_mcRun2_asymptotic_v12')
 
 # Fix because auto:run2_mc points to MCRUN2_74_V9::All
 current_gt = process.GlobalTag.globaltag.value()
@@ -68,7 +68,22 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15MiniAODv2/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/40000/6C4EEC22-C36D-E511-8CCF-002590AC4C74.root"))
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2015D/DoubleEG/MINIAOD/05Oct2015-v1/50000/DEDE4FB0-556F-E511-9F9F-0025905B85E8.root"))
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/50000/048F7B0F-0A6E-E511-B710-00259073E37A.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall15DR76/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1/00000/0C6C1B51-9198-E511-B305-002590747D94.root"))
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15MiniAODv2/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/10000/10AD0666-C26D-E511-9376-002590E2D9FE.root"))
+
+#74x rereco
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2015D/DoubleEG/MINIAOD/04Dec2015-v2/10000/0006F6FD-EE9D-E511-B3D4-00304865C426.root"))
+
+### 76X ###
+
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
+#"/store/mc/RunIIFall15MiniAODv1/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/047F5248-5AAA-E511-8219-02163E017790.root"
+#"/store/mc/RunIIFall15DR76/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1/00000/0C6C1B51-9198-E511-B305-002590747D94.root"
+"/store/mc/RunIISpring15DR74/DYToEE_NNPDF30_13TeV-powheg-pythia8/MINIAODSIM/0TPU25nsData2015v1_magnetOffBS0T_74X_mcRun2_0T_v0-v2/00000/0E666F83-8FBD-E511-BCF9-02163E012FC9.root"
+#"/store/data/Run2015D/DoubleEG/MINIAOD/16Dec2015-v2/00000/000298CD-87A6-E511-9E56-002590593878.root"
+#    "/store/mc/RunIIFall15MiniAODv2/GJet_Pt-15to6000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/PU25nsData2015v1_magnetOff_76X_mcRun2_asymptotic_v12-v1/00000/7247044E-8BB8-E511-90BC-002590DE6E52.root"
+))
+
+########### 
 
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
@@ -82,6 +97,7 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                       )
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
+#process.flashggDiPhotons.VertexSelectorName = "FlashggTracksMultiplicityVertexSelector"
 
 # NEEDED FOR ANYTHING PRIOR TO reMiniAOD
 #process.weightsCount.pileupInfo = "addPileupInfo"

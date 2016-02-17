@@ -72,7 +72,86 @@ DiPhotonCandidate::LorentzVector DiPhotonCandidate::genP4() const
     return ret;
 }
 
+void DiPhotonCandidate::computeVtxsExtras(const flashgg::VertexCandidateMap vtxcandmap, float coneSize)
+{
+    vtxsSumEt2Map_.clear();
+    vtxsConesMap_.clear();
+    
+    for(auto& vtx : vVtxPtr_)
+    {
+        float sumEt2=0;
+        vector<int> cones(3, 0);
+        
+        //---loop on the charged particles
+        auto mapRange = std::equal_range( vtxcandmap.begin(), vtxcandmap.end(), vtx, flashgg::compare_with_vtx() );
+        for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ )
+        {
+            edm::Ptr<pat::PackedCandidate> pfcand = pair_iter->second;
 
+            //---check if charged hadron overlaps with one of the photons
+            edm::RefVector<pat::PackedCandidateCollection> associatedLead =
+                leadingPhoton()->associatedPackedPFCandidates();
+            edm::RefVector<pat::PackedCandidateCollection> associatedSublead =
+                subLeadingPhoton()->associatedPackedPFCandidates();
+            //---keep associated electrons for Zee
+            edm::Ptr<pat::PackedCandidate> leadEle;
+            int nass = 0;
+            for( auto& associated : associatedLead ) {
+                edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated );
+                if( associatedPtr == pfcand )
+                {
+                    if( abs(associatedPtr->pdgId()) == 11)
+                        leadEle = pfcand;
+                    nass++;
+                }
+            }
+            edm::Ptr<pat::PackedCandidate> subleadEle=leadEle;
+            for( auto& associated : associatedSublead ) {
+                edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated );
+                if( associatedPtr == pfcand )
+                {
+                    if( abs(associatedPtr->pdgId()) == 11)
+                        subleadEle = pfcand;                        
+                    nass++;
+                }
+            }
+            //---keep Zee vtx
+            if( leadEle.isNonnull() && subleadEle.isNonnull() && leadEle != subleadEle )
+            {
+                cout << "FOUND" << endl;
+                cout << leadingPhoton()->pt() << "  " << leadEle->pt() << "  " << deltaR( leadEle->momentum().Eta(),
+                                                                                          leadEle->momentum().Phi(),
+                                                                                          eta(), phi() ) << endl;
+                cout << subLeadingPhoton()->pt() << "  " << subleadEle->pt() << "  " << deltaR( subleadEle->momentum().Eta(),
+                                                                                                subleadEle->momentum().Phi(),
+                                                                                                eta(), phi() ) <<endl;
+            }
+
+            if( nass > 0 )
+                continue;
+            
+            //---BDT variables
+            sumEt2 += pfcand->et2();
+            
+            //---fill cones
+            float dR_dipho = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
+                                     eta(), phi() );
+            float dR_back = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
+                                     -eta(), phi()+ROOT::Math::Pi() );
+            if( dR_dipho > coneSize && dR_back > coneSize )
+                ++cones[1];
+            else if( dR_dipho < coneSize )
+                ++cones[0];
+            else
+                ++cones[2];
+
+        }
+
+        //---fill the map        
+        vtxsSumEt2Map_[vtx]=sumEt2;
+        vtxsConesMap_[vtx]=cones;
+    }
+}
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

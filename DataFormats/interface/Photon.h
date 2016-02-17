@@ -47,6 +47,7 @@ namespace flashgg {
         void setEbottom( float val ) {ebottom_ = val;};
         void setE1x3( float val ) {e1x3_ = val;};
         void setS4( float val ) {S4_ = val;};
+
         void setpfPhoIso04( float val ) {pfPhoIso04_ = val;};
         void setpfPhoIso03( float val ) {pfPhoIso03_ = val;};
         void setpfNeutIso04( float val ) {pfNeutIso04_ = val;};
@@ -58,6 +59,15 @@ namespace flashgg {
         void setpfChgIsoWrtWorstVtx03( float val ) {pfChgIsoWrtWorstVtx03_ = val;};
         void setpfChgIsoWrtChosenVtx02( float val ) {pfChgIsoWrtChosenVtx02_ = val;};
         void setpfChgIsoWrtChosenVtx03( float val ) {pfChgIsoWrtChosenVtx03_ = val;};
+
+        void setpfChgNum04( std::map<edm::Ptr<reco::Vertex>, int> valmap ) {  pfChgNum04_ = valmap; }; // concept: pass the pre-computed map when calling this in the producer
+        void setpfChgNum03( std::map<edm::Ptr<reco::Vertex>, int> valmap ) {  pfChgNum03_ = valmap; }; // concept: pass the pre-computed map when calling this in the producer
+        void setpfChgNum02( std::map<edm::Ptr<reco::Vertex>, int> valmap ) {  pfChgNum02_ = valmap; }; // concept: pass the pre-computed map when calling this in the producer
+        void setpfChgNumWrtWorstVtx04( int val ) {pfChgNumWrtWorstVtx04_ = val;};
+        void setpfChgNumWrtWorstVtx03( int val ) {pfChgNumWrtWorstVtx03_ = val;};
+        void setpfChgNumWrtChosenVtx02( int val ) {pfChgNumWrtChosenVtx02_ = val;};
+        void setpfChgNumWrtChosenVtx03( int val ) {pfChgNumWrtChosenVtx03_ = val;};
+
         void setESEffSigmaRR( float val ) {ESEffSigmaRR_ = val;};
         void setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>, float> valmap ) {  phoIdMvaD_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
         void updateEnergy( std::string key, float val );
@@ -90,18 +100,35 @@ namespace flashgg {
         std::map<edm::Ptr<reco::Vertex>, float> const pfChgIso04() const {return pfChgIso04_;};
         std::map<edm::Ptr<reco::Vertex>, float> const pfChgIso03() const {return pfChgIso03_;};
         std::map<edm::Ptr<reco::Vertex>, float> const pfChgIso02() const {return pfChgIso02_;};
-        float const pfChgIso04WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, pfChgIso04_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
-        float const pfChgIso03WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, pfChgIso03_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
-        float const pfChgIso02WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, pfChgIso02_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+        float const pfChgIso04WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT( vtx, pfChgIso04_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+        float const pfChgIso03WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT( vtx, pfChgIso03_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+        float const pfChgIso02WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT( vtx, pfChgIso02_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
 
-        float const pfChgIso04WrtVtx0() const { return findVertex0Float( pfChgIso04_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
-        float const pfChgIso03WrtVtx0() const { return findVertex0Float( pfChgIso03_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
-        float const pfChgIso02WrtVtx0() const { return findVertex0Float( pfChgIso02_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        float const pfChgIso04WrtVtx0() const { return findVertex0T( pfChgIso04_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        float const pfChgIso03WrtVtx0() const { return findVertex0T( pfChgIso03_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        float const pfChgIso02WrtVtx0() const { return findVertex0T( pfChgIso02_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
 
         float const pfChgIsoWrtWorstVtx04() const {return pfChgIsoWrtWorstVtx04_;};
         float const pfChgIsoWrtWorstVtx03() const {return pfChgIsoWrtWorstVtx03_;};
         float const pfChgIsoWrtChosenVtx02() const {return pfChgIsoWrtChosenVtx02_;};
         float const pfChgIsoWrtChosenVtx03() const {return pfChgIsoWrtChosenVtx03_;};
+
+        std::map<edm::Ptr<reco::Vertex>, int> const pfChgNum04() const {return pfChgNum04_;};
+        std::map<edm::Ptr<reco::Vertex>, int> const pfChgNum03() const {return pfChgNum03_;};
+        std::map<edm::Ptr<reco::Vertex>, int> const pfChgNum02() const {return pfChgNum02_;};
+        int const pfChgNum04WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT<int>( vtx, pfChgNum04_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+        int const pfChgNum03WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT<int>( vtx, pfChgNum03_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+        int const pfChgNum02WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT<int>( vtx, pfChgNum02_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+
+        int const pfChgNum04WrtVtx0() const { return findVertex0T<int>( pfChgNum04_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        int const pfChgNum03WrtVtx0() const { return findVertex0T<int>( pfChgNum03_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        int const pfChgNum02WrtVtx0() const { return findVertex0T<int>( pfChgNum02_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+
+        int const pfChgNumWrtWorstVtx04() const {return pfChgNumWrtWorstVtx04_;};
+        int const pfChgNumWrtWorstVtx03() const {return pfChgNumWrtWorstVtx03_;};
+        int const pfChgNumWrtChosenVtx02() const {return pfChgNumWrtChosenVtx02_;};
+        int const pfChgNumWrtChosenVtx03() const {return pfChgNumWrtChosenVtx03_;};
+        
         float const esEffSigmaRR() const {return ESEffSigmaRR_;};
 
         void setExtraNeutIso( const std::string &key, float val ) { extraNeutralIsolations_[key] = val; };
@@ -125,8 +152,8 @@ namespace flashgg {
             return it != extraChargedIsolations_.end() ? it->second : std::map<edm::Ptr<reco::Vertex>, float>();
         };
 
-        float const extraChgIsoWrtVtx0( const std::string &key ) const  { return findVertex0Float( extraChIso( key ) ); };
-        float const extraChgIsoWrtVtx( const std::string &key, const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, extraChIso( key ), lazy ); };
+        float const extraChgIsoWrtVtx0( const std::string &key ) const  { return findVertex0T( extraChIso( key ) ); };
+        float const extraChgIsoWrtVtx( const std::string &key, const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT( vtx, extraChIso( key ), lazy ); };
         float const extraChgIsoWrtWorstVtx( const std::string &key ) const { return findWorstIso( extraChIso( key ) );  };
 
         bool hasEnergyAtStep( std::string key ) const;
@@ -134,18 +161,32 @@ namespace flashgg {
         float const sigEOverE() const;
 
         std::map<edm::Ptr<reco::Vertex>, float> const phoIdMvaD() const {return phoIdMvaD_;};
-        float const phoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, phoIdMvaD_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+        float const phoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexT( vtx, phoIdMvaD_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
 
         void setMatchedGenPhoton( const edm::Ptr<pat::PackedGenParticle> pgp ) { addUserCand( "matchedGenPhoton", pgp ); };
         const pat::PackedGenParticle * matchedGenPhoton() const { return dynamic_cast<const pat::PackedGenParticle *>( userCand( "matchedGenPhoton" ).get() ); };
         bool hasMatchedGenPhoton() const { return hasUserCand( "matchedGenPhoton" ); };
 
+
         void setGenMatchType( mcMatch_t typ ) { addUserInt( "genMatchType", ( int )typ ); };
         mcMatch_t  genMatchType() const { return ( hasUserInt( "genMatchType" ) ? ( mcMatch_t )userInt( "genMatchType" ) : kUnkown ); };
         bool  hasGenMatchType() const { return hasUserInt( "genMatchType" ); };
 
+        void setMatchedGenElectron( const edm::Ptr<pat::PackedGenParticle> pgp ) { addUserCand( "matchedGenElectron", pgp ); };
+        const pat::PackedGenParticle * matchedGenElectron() const { return dynamic_cast<const pat::PackedGenParticle *>( userCand( "matchedGenElectron" ).get() ); };
+        bool hasMatchedGenElectron() const { return hasUserCand( "matchedGenElectron" ); };
+
         void setPassElectronVeto( bool val ) { passElecVeto_ = val; };
         bool passElectronVeto() const { return passElecVeto_ ; };
+
+        void setMatchedElectron( bool val ) { hasMatchedElectron_ = val; };
+        bool matchedElectron() const { return hasMatchedElectron_ ; };
+
+        void setMatchedEleVtx( math::XYZPointF vtx ) { eleVtx_ = vtx; };
+        math::XYZPointF getMatchedEleVtx() const { return eleVtx_; };
+        
+        void setMatchedGsfTrackInnerMissingHits( int missingHits ) { matchedGsfTrackInnerMissingHits_=missingHits; };
+        int matchedGsfTrackInnerMissingHits() const { return matchedGsfTrackInnerMissingHits_ ; };
 
         static int32_t encodeStatusFlags( bool isSaturated, bool isLeRecovered, bool isNeighRecovered, bool isGain1, bool isGain6, bool isWeired) {
             int32_t flags = 0;
@@ -163,10 +204,47 @@ namespace flashgg {
 
     private:
         void setEnergyAtStep( std::string key, float val ); // updateEnergy should be used from outside the class to access this
-        float const findVertexFloat( const edm::Ptr<reco::Vertex> &vtx, const std::map<edm::Ptr<reco::Vertex>, float> &mp, bool lazy ) const;
-        float const findVertex0Float( const std::map<edm::Ptr<reco::Vertex>, float> &mp ) const;
-        float const findWorstIso( const std::map<edm::Ptr<reco::Vertex>, float> &mp ) const;
+        //---Template member methods
+        template<typename T>
+        T const findVertex0T( const std::map<edm::Ptr<reco::Vertex>, T> &mp ) const
+            {
+                for( auto& it : mp ) {
+                    if( it.first.key() == 0 ) {
+                        return  it.second;
+                    }
+                }
 
+                throw cms::Exception( "Missing Data" ) << "could not find value for vertex 0\n";;
+
+                return 0.;
+            };
+        
+        template<typename T>
+        T const findVertexT( const edm::Ptr<reco::Vertex> &vtx, const std::map<edm::Ptr<reco::Vertex>, T> &mp, bool lazy ) const
+            {
+                lazy = lazy && ( vtx.id() == edm::ProductID( 0, 0 ) );
+                for( auto& it : mp )
+                {
+                    if( ( lazy && it.first.key() == vtx.key() ) || it.first == vtx ) {
+                        return  it.second;
+                    }
+                }
+
+                throw cms::Exception( "Missing Data" ) << "could not find value for vertex " << vtx.key() << " " << vtx.id() << " lazy search: " << lazy <<  "\n";
+
+                return 0.;
+            };
+
+        template<typename T>
+        T const findWorstIso( const std::map<edm::Ptr<reco::Vertex>, T> &mp ) const
+            {
+                T ret = std::numeric_limits<T>::min();
+                for( auto it : mp ) {
+                    ret = std::max( ret, it.second );
+                }
+                return ret;
+            };
+        
         float sipip_;
         float sieip_;
         //        float zernike20_;
@@ -191,15 +269,26 @@ namespace flashgg {
         float pfChgIsoWrtWorstVtx03_;
         float pfChgIsoWrtChosenVtx02_;
         float pfChgIsoWrtChosenVtx03_;
+        int   pfChgNumWrtWorstVtx04_;
+        int   pfChgNumWrtWorstVtx03_;
+        int   pfChgNumWrtChosenVtx02_;
+        int   pfChgNumWrtChosenVtx03_;
         float ESEffSigmaRR_;
         float sigEOverE_;
         std::map<edm::Ptr<reco::Vertex>, float> pfChgIso04_;
         std::map<edm::Ptr<reco::Vertex>, float> pfChgIso03_;
         std::map<edm::Ptr<reco::Vertex>, float> pfChgIso02_;
-        std::map<edm::Ptr<reco::Vertex>, float> phoIdMvaD_;
+        std::map<edm::Ptr<reco::Vertex>, int> pfChgNum04_;
+        std::map<edm::Ptr<reco::Vertex>, int> pfChgNum03_;
+        std::map<edm::Ptr<reco::Vertex>, int> pfChgNum02_;
+        std::map<edm::Ptr<reco::Vertex>, float> phoIdMvaD_;        
         bool passElecVeto_;
         std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> > extraChargedIsolations_;
         std::map<std::string, float> extraPhotonIsolations_, extraNeutralIsolations_;
+
+        bool hasMatchedElectron_;
+        math::XYZPointF eleVtx_;
+        int matchedGsfTrackInnerMissingHits_;
     };
 }
 

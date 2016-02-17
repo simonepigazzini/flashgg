@@ -98,7 +98,7 @@ namespace flashgg {
             const flashgg::VertexCandidateMap &mp )
     {
         if( ! chargedVetos_.empty() ) {
-            return found_ ? utils_.pfIsoChgWrtVtx( pho, vtx, mp, conesize_, chargedVetos_[0], chargedVetos_[1], chargedVetos_[2] ) : 999.;
+            return found_ ? utils_.pfIsoChgWrtVtx( pho, vtx, mp, conesize_, chargedVetos_[0], chargedVetos_[1], chargedVetos_[2] ).first : 999.;
         }
         return 0.;
     }

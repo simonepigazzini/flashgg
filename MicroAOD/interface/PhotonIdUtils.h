@@ -41,16 +41,18 @@ namespace flashgg {
 
         void               initialize( );
 
-        float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &,
+        pair<float, int>   pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &,
                                            const edm::Ptr<reco::Vertex>,
                                            const flashgg::VertexCandidateMap,
                                            float, float, float, float );
-        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
-                const std::vector<edm::Ptr<reco::Vertex> > &,
-                const flashgg::VertexCandidateMap,
-                float, float, float, float );
+        std::pair<std::map<edm::Ptr<reco::Vertex>, float>, std::map<edm::Ptr<reco::Vertex>, int> > 
+                  pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
+                                     const std::vector<edm::Ptr<reco::Vertex> > &,
+                                     const flashgg::VertexCandidateMap,
+                                     float, float, float, float );
 
-        float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>, float> & );
+        template<typename T=float>
+        T              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>, T> & );
 
         float              pfCaloIso( const edm::Ptr<pat::Photon> &,
                                       const std::vector<edm::Ptr<pat::PackedCandidate> > &,
@@ -163,7 +165,20 @@ namespace flashgg {
 
     };
 
+    //---Template member methods
+    template<typename T>
+    T PhotonIdUtils::pfIsoChgWrtWorstVtx( map<edm::Ptr<reco::Vertex>, T> &vtxIsoMap )
+    {
+        T MaxValueMap = -1000;
+        T itValue = 0;
 
+        for( auto& it : vtxIsoMap ) {
+            itValue = it.second;
+            if( itValue > MaxValueMap ) { MaxValueMap = itValue; }
+        }
+
+        return MaxValueMap;
+    }
 }
 
 

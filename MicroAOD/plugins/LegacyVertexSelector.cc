@@ -73,7 +73,7 @@ namespace flashgg {
         edm::FileInPath vertexIdMVAweightfile_;
         edm::FileInPath vertexProbMVAweightfile_;
 
-        unsigned int nVtxSaveInfo;
+        int nVtxSaveInfo;
         bool trackHighPurity;
         double dRexclude;
         double sigma1Pix;
@@ -124,6 +124,7 @@ namespace flashgg {
         float dZ2_;
         float vtxprobmva_;
 
+        std::vector<int>   vn_tracks_;
         std::vector<float> vlogsumpt2_;
         std::vector<float> vptbal_;
         std::vector<float> vptasym_;
@@ -140,7 +141,7 @@ namespace flashgg {
         vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vertexIdMVAweightfile" );
         vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vertexProbMVAweightfile" );
 
-        nVtxSaveInfo          = iConfig.getUntrackedParameter<unsigned int>( "nVtxSaveInfo" );
+        nVtxSaveInfo          = iConfig.getUntrackedParameter<int>( "nVtxSaveInfo" );
         trackHighPurity       = iConfig.getParameter<bool>( "trackHighPurity" );
         dRexclude             = iConfig.getParameter<double>( "dRexclude" );
         sigma1Pix             = iConfig.getParameter<double>( "sigma1Pix" );
@@ -587,6 +588,7 @@ namespace flashgg {
                                                        )
     {
 
+        vn_tracks_.clear();
         vlogsumpt2_.clear();
         vptbal_.clear();
         vptasym_.clear();
@@ -633,6 +635,7 @@ namespace flashgg {
             Initialize();
         }
 
+        std::vector<int>   vn_tracks;
         std::vector<float> vlogsumpt2;
         std::vector<float> vptbal;
         std::vector<float> vptasym;
@@ -659,6 +662,7 @@ namespace flashgg {
             p14.SetPxPyPzE( Photon1Dir_uv.x(), Photon1Dir_uv.y(), Photon1Dir_uv.z(), g1->superCluster()->rawEnergy() );
             p24.SetPxPyPzE( Photon2Dir_uv.x(), Photon2Dir_uv.y(), Photon2Dir_uv.z(), g2->superCluster()->rawEnergy() );
 
+            int n_tracks = 0;
             TVector2 sumpt;
             double sumpt2_out = 0;
             double sumpt2_in = 0;
@@ -687,6 +691,7 @@ namespace flashgg {
                     sumpt2_in += tkXY.Mod2();
                     continue;
                 }
+                ++n_tracks;
                 sumpt += tkXY;
                 sumpt2_out += tkXY.Mod2();
                 ptbal -= tkXY * ( p14 + p24 ).Vect().XYvector().Unit();
@@ -718,12 +723,13 @@ namespace flashgg {
 
             if( pull_conv > 10. ) { pull_conv = 10.; }
 
-            logsumpt2_ = log( sumpt2_in + sumpt2_out );
+            logsumpt2_ = log( /*sumpt2_in*/ + sumpt2_out );
             ptbal_ = ptbal;
             pull_conv_ = pull_conv;
             nConv_ = nConv;
             float mva_value = VertexIdMva_->EvaluateMVA( "BDT" );
 
+            vn_tracks.push_back( n_tracks );
             vlogsumpt2.push_back( logsumpt2_ );
             vptbal.push_back( ptbal_ );
             vptasym.push_back( ptasym_ );
@@ -757,9 +763,10 @@ namespace flashgg {
 
         for( unsigned int jj = 0; jj < sorter.size(); jj++ ) {
 
-            if( vlogsumpt2_.size() < nVtxSaveInfo ) {
+            if( nVtxSaveInfo == -1 || vlogsumpt2_.size() < abs(nVtxSaveInfo) ) {
 
                 vmva_sortedindex_.push_back( sorter[jj].first );
+                vn_tracks_.push_back( vn_tracks[sorter[jj].first] );
                 vlogsumpt2_.push_back( vlogsumpt2[sorter[jj].first] );
                 vptbal_.push_back( vptbal[sorter[jj].first] );
                 vptasym_.push_back( vptasym[sorter[jj].first] );
@@ -795,6 +802,7 @@ namespace flashgg {
                                                          )
     {
 
+        vn_tracks_.clear();
         vlogsumpt2_.clear();
         vptbal_.clear();
         vptasym_.clear();
@@ -836,6 +844,7 @@ namespace flashgg {
             Initialize();
         }
 
+        std::vector<int>   vn_tracks;
         std::vector<float> vlogsumpt2;
         std::vector<float> vptbal;
         std::vector<float> vptasym;
@@ -858,6 +867,7 @@ namespace flashgg {
             TLorentzVector p24;
             p24.SetPxPyPzE(g2->px(), g2->py(), g2->pz(), g2->energy());
 
+            int n_tracks = 0;
             TVector2 sumpt;
             double sumpt2_out = 0;
             double sumpt2_in = 0;
@@ -891,6 +901,7 @@ namespace flashgg {
                     sumpt2_in += tkXY.Mod2();
                     continue;
                 }
+                ++n_tracks;
                 sumpt += tkXY;
                 sumpt2_out += tkXY.Mod2();
                 ptbal -= tkXY * ( p14 + p24 ).Vect().XYvector().Unit();
@@ -931,6 +942,7 @@ namespace flashgg {
             nConv_ = nConv;
             float mva_value = VertexIdMva_->EvaluateMVA( "BDT" );
 
+            vn_tracks.push_back( n_tracks );
             vlogsumpt2.push_back( logsumpt2_ );
             vptbal.push_back( ptbal_ );
             vptasym.push_back( ptasym_ );
@@ -964,9 +976,10 @@ namespace flashgg {
 
         for( unsigned int jj = 0; jj < sorter.size(); jj++ ) {
 
-            if( vlogsumpt2_.size() < nVtxSaveInfo ) {
+            if( nVtxSaveInfo == -1 || vlogsumpt2_.size() < abs(nVtxSaveInfo) ) {
 
                 vmva_sortedindex_.push_back( sorter[jj].first );
+                vn_tracks_.push_back( vn_tracks[sorter[jj].first] );
                 vlogsumpt2_.push_back( vlogsumpt2[sorter[jj].first] );
                 vptbal_.push_back( vptbal[sorter[jj].first] );
                 vptasym_.push_back( vptasym[sorter[jj].first] );
@@ -1011,6 +1024,7 @@ namespace flashgg {
         dipho.setDZ1( dZ1_ );
         dipho.setDZ2( dZ2_ );
 
+        dipho.setVNTracks( vn_tracks_ );
         dipho.setVNConv( vnConv_ );
         dipho.setVPullConv( vpull_conv_ );
         dipho.setVPtBal( vptbal_ );
@@ -1039,7 +1053,7 @@ namespace flashgg {
         phojet.setMVA2( MVA2_ );
         phojet.setDZ1( dZ1_ );
         phojet.setDZ2( dZ2_ );
-
+        
         phojet.setVNConv( vnConv_ );
         phojet.setVPullConv( vpull_conv_ );
         phojet.setVPtBal( vptbal_ );

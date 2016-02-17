@@ -1,4 +1,3 @@
-
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -49,6 +48,7 @@ namespace flashgg {
         EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
 
         EDGetTokenT<vector<flashgg::GenPhotonExtra> > genPhotonToken_;
+        EDGetTokenT<View<pat::PackedGenParticle> > genElectronToken_;
         double maxGenDeltaR_;
         bool copyExtraGenInfo_;
 
@@ -86,6 +86,7 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "vertexTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "vertexCandidateMapTag" ) ) ),
         genPhotonToken_( mayConsume<vector<flashgg::GenPhotonExtra> >( iConfig.getParameter<InputTag>( "genPhotonTag" ) ) ),
+        genElectronToken_( mayConsume< View<pat::PackedGenParticle> >( iConfig.getParameter<InputTag>( "genElectronTag" ) ) ),
         ecalHitEBToken_( consumes<EcalRecHitCollection>( iConfig.getParameter<edm::InputTag>( "reducedBarrelRecHitCollection" ) ) ),
         ecalHitEEToken_( consumes<EcalRecHitCollection>( iConfig.getParameter<edm::InputTag>( "reducedEndcapRecHitCollection" ) ) ),
         ecalHitESToken_( consumes<EcalRecHitCollection>( iConfig.getParameter<edm::InputTag>( "reducedPreshowerRecHitCollection" ) ) ),
@@ -154,9 +155,13 @@ namespace flashgg {
         evt.getByToken( rhoToken_, rhoHandle );
         //        evt.getByLabel( rhoFixedGrid_, rhoHandle );
         Handle<vector<flashgg::GenPhotonExtra> > genPhotonsHandle;
+        Handle<View<pat::PackedGenParticle> > genElectronsHandle;
+
         if( ! evt.isRealData() ) {
             evt.getByToken( genPhotonToken_, genPhotonsHandle );
+            evt.getByToken( genElectronToken_, genElectronsHandle );
         }
+
         Handle<std::vector<pat::Electron> > electronHandle;
         evt.getByToken( electronToken_, electronHandle );
         //        evt.getByLabel( electronLabel_, electronHandle );
@@ -192,6 +197,16 @@ namespace flashgg {
             if( !ConversionTools::hasMatchedPromptElectron( pp->superCluster(), electronHandle, convs, beamspot.position(), lxyMin_, probMin_, nHitsBeforeVtxMax_ ) ) { fg.setPassElectronVeto( true ) ; }
             else { fg.setPassElectronVeto( false ) ;}
 
+            //electron matching
+            for (std::vector<pat::Electron>::const_iterator ele = electronHandle->begin(); ele!=electronHandle->end(); ele++)
+            {
+                //match electron to supercluster
+                if(ele->superCluster() != pp->superCluster()) continue;
+                fg.setMatchedElectron(true);
+                fg.setMatchedGsfTrackInnerMissingHits(ele->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS));
+                fg.setMatchedEleVtx(ele->trackPositionAtVtx());
+            }
+            
             // Gen matching
             if( ! evt.isRealData() ) {
                 unsigned int best = INT_MAX;
@@ -216,6 +231,27 @@ namespace flashgg {
                         extra.copyTo( fg );
                     }
                 }
+
+                //now gen electron matching
+                best = INT_MAX;
+                bestptdiff = 99e15;
+
+                auto genElectronPointers = genElectronsHandle->ptrs();
+                for( unsigned int j = 0 ; j < genElectronPointers.size() ; j++ ) {
+                    auto gen = genElectronPointers[j];
+                    if( abs(gen->pdgId()) != 11 ) { continue; }
+                    float dR = reco::deltaR( *pp, *gen );
+                    if( dR > maxGenDeltaR_ ) { continue; }
+                    float ptdiff = fabs( pp->pt() - gen->pt() );
+                    if( ptdiff < bestptdiff ) {
+                        bestptdiff = ptdiff;
+                        best = j;
+                    }
+                }
+                if( best < INT_MAX ) {
+                    fg.setMatchedGenElectron( genElectronPointers[best] );
+                }
+
             }
 
             /// double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
@@ -240,21 +276,23 @@ namespace flashgg {
 
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );
 
-            std::map<edm::Ptr<reco::Vertex>, float> isomap04 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.4, 0.02, 0.02, 0.1 );
-            std::map<edm::Ptr<reco::Vertex>, float> isomap03 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.3, 0.02, 0.02, 0.1 );
-            fg.setpfChgIso04( isomap04 );
-            fg.setpfChgIso03( isomap03 );
-            std::map<edm::Ptr<reco::Vertex>, float> &ref_isomap04 = isomap04;
-            std::map<edm::Ptr<reco::Vertex>, float> &ref_isomap03 = isomap03;
-            float pfChgIsoWrtWorstVtx04 =  phoTools_.pfIsoChgWrtWorstVtx( ref_isomap04 );
-            float pfChgIsoWrtWorstVtx03 =  phoTools_.pfIsoChgWrtWorstVtx( ref_isomap03 );
-            fg.setpfChgIsoWrtWorstVtx04( pfChgIsoWrtWorstVtx04 );
-            fg.setpfChgIsoWrtWorstVtx03( pfChgIsoWrtWorstVtx03 );
+            auto isomap04 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.4, 0.02, 0.02, 0.1 );
+            auto isomap03 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.3, 0.02, 0.02, 0.1 );
+            fg.setpfChgIso04( isomap04.first );
+            fg.setpfChgIso03( isomap03.first );
+            fg.setpfChgNum04( isomap04.second );
+            fg.setpfChgNum03( isomap03.second );
+            fg.setpfChgIsoWrtWorstVtx04( phoTools_.pfIsoChgWrtWorstVtx( isomap04.second ) );
+            fg.setpfChgIsoWrtWorstVtx03( phoTools_.pfIsoChgWrtWorstVtx( isomap03.second ) );
+            fg.setpfChgNumWrtWorstVtx04( phoTools_.pfIsoChgWrtWorstVtx( isomap04.second ) );
+            fg.setpfChgNumWrtWorstVtx03( phoTools_.pfIsoChgWrtWorstVtx( isomap03.second ) );
 
             // This map is needed for the photon preselection
-            std::map<edm::Ptr<reco::Vertex>, float> isomap02 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.2, 0.02, 0.02, 0.1 );
-            fg.setpfChgIso02( isomap02 );
+            auto isomap02 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.2, 0.02, 0.02, 0.1 );
+            fg.setpfChgIso02( isomap02.first );
             fg.setpfChgIsoWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
+            fg.setpfChgNum02( isomap02.second );
+            fg.setpfChgNumWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
 
             float pfPhoIso04 = phoTools_.pfCaloIso( pp, pfcandidates->ptrs(), 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx );
             float pfPhoIso03 = phoTools_.pfCaloIso( pp, pfcandidates->ptrs(), 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx );
