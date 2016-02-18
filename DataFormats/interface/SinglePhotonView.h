@@ -29,6 +29,9 @@ namespace flashgg {
         float pfChIso02WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgIso02WrtVtx( vtxRef_ ) ); }
         float pfChIso03WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgIso03WrtVtx( vtxRef_ ) ); }
         float pfChIso04WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgIso04WrtVtx( vtxRef_ ) ); }
+        int   pfChNum02WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgNum02WrtVtx( vtxRef_ ) ); }
+        int   pfChNum03WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgNum03WrtVtx( vtxRef_ ) ); }
+        int   pfChNum04WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgNum04WrtVtx( vtxRef_ ) ); }
 
         float phoIdMvaWrtChosenVtx() const { MakePhoton(); return ( photon()->phoIdMvaDWrtVtx( vtxRef_ ) ); }
 

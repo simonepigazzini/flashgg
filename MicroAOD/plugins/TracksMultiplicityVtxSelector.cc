@@ -41,6 +41,7 @@ namespace flashgg {
         void writeInfoFromLastSelectionTo( flashgg::PhotonJetCandidate & ) override;
 
     private:
+        int bestVtx_;
         std::vector<edm::Ptr<reco::Vertex> > vtxs_;
         VertexCandidateMap vertexCandidateMap_;        
     };
@@ -61,7 +62,7 @@ namespace flashgg {
         vtxs_ = vtxs;
         
         int bestVtxSum=0;
-        int bestVtx=0;
+        bestVtx_=0;
         for( unsigned int iVtx=0; iVtx<vtxs.size(); ++iVtx ) {
             int thisVtxSum=0;
             auto mapRange = std::equal_range( vertexCandidateMap.begin(), vertexCandidateMap.end(), vtxs[iVtx], flashgg::compare_with_vtx() );
@@ -73,11 +74,11 @@ namespace flashgg {
             }
             if( thisVtxSum > bestVtxSum ) {
                 bestVtxSum = thisVtxSum;
-                bestVtx = iVtx;
+                bestVtx_ = iVtx;
             }
         }
 
-        return vtxs[bestVtx];
+        return vtxs[bestVtx_];
     }
 
     edm::Ptr<reco::Vertex> TracksMultiplicityVertexSelector::select( const edm::Ptr<flashgg::Photon> &g1,
@@ -96,7 +97,7 @@ namespace flashgg {
         vtxs_ = vtxs;
         
         int bestVtxSum=0;
-        int bestVtx=0;
+        bestVtx_=0;
         for( unsigned int iVtx=0; iVtx<vtxs.size(); ++iVtx ) {
             int thisVtxSum=0;
             auto mapRange = std::equal_range( vertexCandidateMap.begin(), vertexCandidateMap.end(), vtxs[iVtx], flashgg::compare_with_vtx() );
@@ -108,11 +109,11 @@ namespace flashgg {
             }
             if( thisVtxSum > bestVtxSum ) {
                 bestVtxSum = thisVtxSum;
-                bestVtx = iVtx;
+                bestVtx_ = iVtx;
             }
         }
 
-        return vtxs[bestVtx];
+        return vtxs[bestVtx_];
     }
 
     void TracksMultiplicityVertexSelector::writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate &dipho )
