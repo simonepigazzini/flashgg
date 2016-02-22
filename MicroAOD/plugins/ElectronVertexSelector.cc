@@ -43,16 +43,16 @@ namespace flashgg {
     };
 
     edm::Ptr<reco::Vertex> ElectronVertexSelector::select( const edm::Ptr<flashgg::Photon> &g1,
-            const edm::Ptr<flashgg::Photon> &g2,
-            const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
-            const VertexCandidateMap &vertexCandidateMap,
-            const std::vector<edm::Ptr<reco::Conversion> > &convs,
-            const std::vector<edm::Ptr<reco::Conversion> > &convsSingleLeg,
-            const math::XYZPoint &beamSpot,
-            bool
+                                                           const edm::Ptr<flashgg::Photon> &g2,
+                                                           const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
+                                                           const VertexCandidateMap &vertexCandidateMap,
+                                                           const std::vector<edm::Ptr<reco::Conversion> > &convs,
+                                                           const std::vector<edm::Ptr<reco::Conversion> > &convsSingleLeg,
+                                                           const math::XYZPoint &beamSpot,
+                                                           bool
             //						      const Parameters_Selector_Type& param,
             //                                                      const float& beamsig
-                                                       )
+        )
     {
         auto chosenVtx = vtxs[0];
         float eleVtxZ = -1000;
@@ -76,10 +76,10 @@ namespace flashgg {
     }
 
     edm::Ptr<reco::Vertex> ElectronVertexSelector::select( const edm::Ptr<flashgg::Photon> &g1,
-                                                                     const edm::Ptr<pat::Jet> &g2,
-                                                                     const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
-                                                                     const VertexCandidateMap &vertexCandidateMap,
-                                                                     const std::vector<edm::Ptr<reco::Conversion> > &convs,
+                                                           const edm::Ptr<pat::Jet> &g2,
+                                                           const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
+                                                           const VertexCandidateMap &vertexCandidateMap,
+                                                           const std::vector<edm::Ptr<reco::Conversion> > &convs,
             const std::vector<edm::Ptr<reco::Conversion> > &convsSingleLeg,
             const math::XYZPoint &beamSpot,
             bool

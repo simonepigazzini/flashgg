@@ -115,18 +115,6 @@ void DiPhotonCandidate::computeVtxsExtras(const flashgg::VertexCandidateMap vtxc
                     nass++;
                 }
             }
-            //---keep Zee vtx
-            if( leadEle.isNonnull() && subleadEle.isNonnull() && leadEle != subleadEle )
-            {
-                cout << "FOUND" << endl;
-                cout << leadingPhoton()->pt() << "  " << leadEle->pt() << "  " << deltaR( leadEle->momentum().Eta(),
-                                                                                          leadEle->momentum().Phi(),
-                                                                                          eta(), phi() ) << endl;
-                cout << subLeadingPhoton()->pt() << "  " << subleadEle->pt() << "  " << deltaR( subleadEle->momentum().Eta(),
-                                                                                                subleadEle->momentum().Phi(),
-                                                                                                eta(), phi() ) <<endl;
-            }
-
             if( nass > 0 )
                 continue;
             
