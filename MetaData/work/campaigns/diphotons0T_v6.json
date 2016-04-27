@@ -1,0 +1,9 @@
+{
+    "data" : [
+    ],
+    "sig"  : [
+    ],
+    "bkg"  : [
+        "/DYToEE_NNPDF30_13TeV-powheg-pythia8/RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T_76X_mcRun2_0T_v1-v1/MINIAODSIM"
+             ]
+}

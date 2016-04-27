@@ -1,0 +1,46 @@
+{
+    "data" : [
+    ],
+    "sig"  : [
+        "/RSGravToGG_kMpl-001_M-2000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-001_M-4000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-001_M-500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-001_M-6000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-001_M-7000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-001_M-750_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-1000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-1250_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-1500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-1750_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-2000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-2250_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-2500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-2750_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-3000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-3500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-4500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-5000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-5500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-6000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-6500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-7000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-01_M-750_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-1000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-1500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-2000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-3000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-5000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-500_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-6000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-7000_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/RSGravToGG_kMpl-02_M-750_TuneCUEP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1-v1/MINIAODSIM"
+             ],
+    "bkg"  : [
+        "/GJets_DR-0p4_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/GJets_DR-0p4_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T_76X_mcRun2_0T_v1-v1/MINIAODSIM",
+        "/DYToEE_NNPDF30_13TeV-powheg-pythia8/RunIIFall15MiniAODv1-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM"
+             ]
+}
