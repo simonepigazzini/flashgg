@@ -211,7 +211,7 @@ class SamplesManager(object):
         ret,out = self.parallel_.run("/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select",["find",dsetName],interactive=True)[2]
         files = []
         for line in out.split("\n"):
-            if line.endswith(".root"):
+            if line.endswith(".root") and not "failed" in line:
                 files.append( {"name":line.replace("/eos/cms",""), "nevents":0} )
 
         return files
@@ -441,6 +441,16 @@ class SamplesManager(object):
         
     def mergeDataset(self,dst,merge):
         dst["vetted"]=False
+        
+        from FWCore.PythonUtilities.LumiList import LumiList
+        dstLumisToSkip = LumiList(compactList=dst.get('lumisToSkip',{}))
+        mergeLumisToSkip = LumiList(compactList=merge.get('lumisToSkip',{}))
+        dstLumisToSkip += mergeLumisToSkip
+        dstLumisToSkip = dstLumisToSkip.compactList
+        if len(dstLumisToSkip) > 0:
+            dst['lumisToSkip'] = dstLumisToSkip
+            print "\nWARNING: Merged lumisToSkip list. It is reccomended to run the 'overlap' command to re-geneate the list from scratch."
+        
         dstFiles=dst["files"]
         mergeFiles=merge["files"]
         for fil in mergeFiles:
@@ -605,12 +615,13 @@ class SamplesManager(object):
         from FWCore.PythonUtilities.LumiList import LumiList
         fulist = LumiList()
         for dataset in datasets:
-            dlist = LumiList()
+            ## dlist = LumiList()
+            dlist = self.getDatasetLumiList(dataset,catalog)
             jsonout = dataset.lstrip("/").rstrip("/").replace("/","_")+".json"
-            for fil in catalog[dataset]["files"]:
-                flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
-                ## print flist
-                dlist += flist
+            ### for fil in catalog[dataset]["files"]:
+            ###     flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
+            ###     ## print flist
+            ###     dlist += flist
             if not output:
                 with open(jsonout,"w+") as fout:
                     fout.write(json.dumps(dlist.compactList,sort_keys=True))
@@ -879,7 +890,7 @@ Commands:
         slim_datasets = []
         for d in datasets:
             empty,prim,sec,tier = d.split("/")
-            if len(sec) > maxSec:
+            if not self.options.verbose and len(sec) > maxSec:
                 sec = sec[0:firstHalf]+".."+sec[-secondHalf:-1]
             slim_datasets.append("/%s/%s/%s" % ( prim, sec, tier ) )
         ## datasets = slim_datasets
