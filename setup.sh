@@ -133,6 +133,12 @@ git cms-addpkg RecoJets/JetProducers
 #git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx
 git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx-bugfixSync
 
+echo "Setting up QGL..."
+git cms-merge-topic -u sethzenz:topic-QGL-MiniAOD-vertexIndex
+
+echo "Setting up MET filters..."
+git cms-merge-topic -u mplaner:METfilters808
+
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
 #git cms-addpkg PhysiscsTools/TagAndProbe
@@ -166,6 +172,11 @@ fi
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
+
+echo "copy smearing files tored in flashgg into egamma tools"
+cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit

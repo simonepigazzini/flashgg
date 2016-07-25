@@ -239,11 +239,9 @@ if options.createCrabConfig:
     Popen(['cp', '-p', options.parameterSet, './'])
     rel = os.environ.get('CMSSW_BASE')
     print rel
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Fall15_25nsV2_DATA.db', './'])
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Fall15_25nsV2_MC.db', './'])
-    # for the moment just add, then possibly remove the above 2 lines - FIXME
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Spring16_25nsV3_DATA.db', './'])
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Spring16_25nsV3_MC.db', './'])
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Spring16_25nsV6_DATA.db', './'])
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Spring16_25nsV6_MC.db', './'])
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/QGL_80X.db', './'])
     print ("Storing options into config.json")
     cfg = open("config.json","w+")
     cfg.write( dumpCfg(options) )
@@ -278,6 +276,8 @@ if options.createCrabConfig:
             jobname = jobname.replace("RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T","0T")
         if len(jobname) > 97:
             jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2","Spring16")
         if len(jobname) > 97:
             jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2","Spring16")
         if len(jobname) > 97:
