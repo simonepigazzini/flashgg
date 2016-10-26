@@ -10,8 +10,9 @@ def getEtaR9(cat):
     elif 'ee' in cat:
         etaMin,etaMax = 1.5,6. # before preselection there are photon candidated above 3 in some cases (should be removed by diphoton producer?)
     else:
-        etaMin,etaMax = map(float, cat.rsplit("-",1)[0].replace('abseta_','').split('_'))
-    
+        etaMin = cat.split("abseta_",1)[1].split('_')[0]
+        etaMax = cat.split("abseta_",1)[1].split('_')[1].split('-',1)[0]
+
     if etaMax == 2.5: etaMax = 6. # before preselection there are photon candidated above 3 in some cases (should be removed by diphoton producer?)
     if etaMax == 1.4442: etaMax = 1.5
     if etaMin == 1.566: etaMin = 1.5
@@ -24,16 +25,29 @@ def getEtaR9(cat):
         r9Max = 0.94
 
     return (etaMin,etaMax),(r9Min,r9Max)
+
+def getGain(cat):
+    if( len(cat.split("gainEle_",1)) == 1 ): return (0,13) #if len is 1 => no gain cat
+    gainFlag = int(cat.split("gainEle_",1)[1].split('-',1)[0])
+    return (gainFlag,gainFlag) #min=max 
+
+def getEt(cat):
+    if( len(cat.split("Et_",1)) == 1 ): return (0,50000) #if len is 1 => no Et cat
+    EtMin = cat.split("Et_",1)[1].split('_')[0]
+    EtMax = cat.split("Et_",1)[1].split('_')[1].split('-',1)[0]
+    return (EtMin,EtMax)
     
 def readEcalElfRunDep(line):
     toks = filter(lambda x: x!='', line.replace('\t',' ').split(' ') )
     if( len(toks) == 0 ): return None
-    
+    #toks[0] is the category name
     eta,r9 = getEtaR9(toks[0])
+    gain   = getGain(toks[0])
+    et     = getEt(toks[0])
     run = map(int, toks[2:4])
     run[1] += 1 # ECALELF boundaries are [], while flashggg ones [)
     
-    lowB,upB = zip(run,eta,r9)
+    lowB,upB = zip(run,eta,r9,et,gain) #
 
     val = float( toks[4] )-1.
     errs = map(float,toks[5:8]) 
@@ -63,7 +77,7 @@ def getRunDependentScaleBins(fname):
         shifts = filter(lambda x: x!=None, map(readEcalElfRunDep, fin.read().split("\n") ))
         
         scaleBins = cms.PSet(
-            variables = cms.vstring("global.run","abs(superCluster.eta)","r9"),
+            variables = cms.vstring("global.run","abs(superCluster.eta)","r9","et","gain"),#gain?
             bins = cms.VPSet(shifts)
             )
 
