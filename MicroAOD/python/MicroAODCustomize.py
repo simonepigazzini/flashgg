@@ -105,14 +105,16 @@ class MicroAODCustomize(object):
                 self.customizeDataMuons(process)
         elif "sig" in self.processType.lower():
             self.customizeSignal(process)
-            if "tth" in customize.datasetName.lower():
+            if "tth" in self.datasetName.lower():
                 self.customizeTTH(process)
-            elif "vh" in customize.datasetName.lower():
+            elif "vh" in self.datasetName.lower():
                 self.customizeVH(process)
-            elif "ggh" in customize.datasetName.lower() or "glugluh" in customize.datasetName.lower():
+            elif "ggh" in self.datasetName.lower() or "glugluh" in self.datasetName.lower():
                 self.customizeGGH(process)
-            elif "vbf" in customize.datasetName.lower():
-                self.customizeVBF(process)
+            elif "vbf" in self.datasetName.lower():
+                self.customizeVBF(process)                
+            elif "ADD" in self.datasetName:
+                print("NOTE: high mass diphoton signal production")
             else:
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
         if self.processType == "background":
@@ -123,9 +125,9 @@ class MicroAODCustomize(object):
             self.customizeHLT(process)
         if self.muMuGamma == 1:
             self.customizeMuMuGamma(process)
-        elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
+        elif self.muMuGamma == 2 and ("DY" in self.datasetName or "DoubleMuon" in self.datasetName):
             self.customizeMuMuGamma(process)
-        if "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" in customize.datasetName:
+        if "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" in self.datasetName:
             self.customizePDFs(process)
         if len(self.globalTag) >0:
             self.customizeGlobalTag(process)
