@@ -240,8 +240,6 @@ namespace flashgg {
             
             // find vertex associated to diphoton object
             size_t vtx = (size_t)dipho->jetCollectionIndex();
-           // size_t vtx = (size_t)dipho->vertexIndex();
-          //  if( vtx >= jetTokens_.size() ) { vtx = 0; }
             // and read corresponding jet collection
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[vtx], jets);
@@ -251,10 +249,11 @@ namespace flashgg {
             for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
                 auto jet = jets->ptrAt(ijet);
                 if (jet->pt()<minJetPt_ || fabs(jet->eta())>maxJetEta_)continue;
-                if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME threshold might not be 0?
+                //if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME threshold might not be 0?
                 if( useJetID_ ){
                     if( JetIDLevel_ == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
                     if( JetIDLevel_ == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
+                    if( JetIDLevel_ == "Tight2017" && !jet->passesJetID  ( flashgg::Tight2017 ) ) continue;
                 }
                 if( reco::deltaR( *jet, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ ) {
                     cleaned_jets.push_back( jet );
@@ -280,8 +279,8 @@ namespace flashgg {
                     }
                 }
             }
-            if (!hasDijet) continue;             
- 
+            if (!hasDijet)  continue;             
+
             auto & leadJet = jet1; 
             auto & subleadJet = jet2; 
 
@@ -307,16 +306,21 @@ namespace flashgg {
             }
 
             tag_obj.setMVA( mva );
-            //tag_obj.setMVAprob( mva_vector );
+            //            tag_obj.setMVAprob( mva_vector );
             
             // choose category and propagate weights
             int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
             tag_obj.setCategoryNumber( catnum );
             tag_obj.includeWeights( *dipho );
-            tag_obj.includeWeights( *leadJet );
-            tag_obj.includeWeights( *subleadJet );
+            //            tag_obj.includeWeights( *leadJet );
+            //            tag_obj.includeWeights( *subleadJet );
 
-            if (catnum>-1){
+            //            tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
+            //            tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
+
+
+
+          if (catnum>-1){
                 if (doCategorization_) {
                    if (tag_obj.dijet().mass()<mjjBoundariesLower_[catnum] || tag_obj.dijet().mass()>mjjBoundariesUpper_[catnum]) continue;
                 }
@@ -325,7 +329,7 @@ namespace flashgg {
                 if( ! evt.isRealData() ) {
                     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
                 }
-            }
+          }
         }
         evt.put( std::move( truths ) );
         evt.put( std::move( tags ) );

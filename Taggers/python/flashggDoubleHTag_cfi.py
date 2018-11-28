@@ -14,12 +14,12 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    VetoConeSize   = cms.double(0.4),
                                    MinLeadPhoPt   = cms.double(1./3.),
                                    MinSubleadPhoPt   = cms.double(0.25),
-                                   ScalingPtCuts = cms.bool(True),
+                                   ScalingPtCuts = cms.bool(False),
                                    DoSigmaMDecorr =cms.untracked.uint32(1),#transformation of sigmaM/M
                                    SigmaMDecorrFile = cms.untracked.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Mgg40_180.root"),
-                                   ApplyEGMPhotonID = cms.untracked.bool(True),
+                                   ApplyEGMPhotonID = cms.untracked.bool(False),
                                    PhotonIDCut = cms.double(0.2),#this is loose id for 2016
-                                   PhotonElectronVeto =cms.untracked.vint32(1, 1), #0: Pho1, 1: Pho2
+                                   PhotonElectronVeto =cms.untracked.vint32(0, 0), #0: Pho1, 1: Pho2
 
                                    MinJetPt   = cms.double(20.),
                                    MaxJetEta   = cms.double(2.5),
@@ -27,7 +27,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                   # BTagType = cms.untracked.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'), #string for btag algorithm
                                    BTagType = cms.untracked.string('pfDeepCSVJetTags:probb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
-                                   JetIDLevel = cms.string('Loose'),
+                                   JetIDLevel = cms.string('Tight2017'),
 
                                    MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA
                                    MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX

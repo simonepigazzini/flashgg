@@ -296,8 +296,8 @@ def createJERESource(process):
           record = cms.string('JetResolutionScaleFactorRcd'),
           #tag    = cms.string('JR_Spring16_25nsV6_MC_SF_AK4PFchs'),
           #tag    = cms.string('JR_Spring16_25nsV10_MC_SF_AK4PFchs'),
-          #          tag    = cms.string('JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs'),
-          tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs'),          
+#          tag    = cms.string('JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs'),
+                    tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs'),          
           label  = cms.untracked.string('AK4PFchs')
           ),
         ),

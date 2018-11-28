@@ -9,7 +9,8 @@ process = cms.Process("Analysis")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.source = cms.Source("PoolSource",
                             fileNames=cms.untracked.vstring(
-        "file:myMicroAODOutputFile.root"        
+        "root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_5.root"
+#        "root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_4.root"
         )
 )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
@@ -37,13 +38,8 @@ process.TFileService = cms.Service("TFileService",
 process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi") 
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 process.kinPreselDiPhotons = flashggPreselectedDiPhotons.clone(
-cut=cms.string(
-        "leadingPhoton.pt > 40 && subLeadingPhoton.pt > 30"
-        " && abs(leadingPhoton.superCluster.eta)<2.5 && abs(subLeadingPhoton.superCluster.eta)<2.5 "
-        " && ( abs(leadingPhoton.superCluster.eta)<1.4442 || abs(leadingPhoton.superCluster.eta)>1.566)"
-        " && ( abs(subLeadingPhoton.superCluster.eta)<1.4442 || abs(subLeadingPhoton.superCluster.eta)>1.566)"
-        )
-                                                              )
+    cut = cms.string('    (leadingPhoton.full5x5_r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3) && (subLeadingPhoton.full5x5_r9>0.8||subLeadingPhoton.egChargedHadronIso<20||subLeadingPhoton.egChargedHadronIso/subLeadingPhoton.pt<0.3) && (leadingPhoton.hadronicOverEm < 0.08 && subLeadingPhoton.hadronicOverEm < 0.08) && (leadingPhoton.pt >30.0 && subLeadingPhoton.pt > 20.0) && (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) && (abs(leadingPhoton.superCluster.eta) < 1.4442 || abs(leadingPhoton.superCluster.eta) > 1.566) && (abs(subLeadingPhoton.superCluster.eta) < 1.4442 || abs(subLeadingPhoton.superCluster.eta) > 1.566) && (leadPhotonId > -0.9 && subLeadPhotonId > -0.9)')
+    )
 
 process.load("flashgg.Taggers.diphotonDumper_cfi") ##  import diphotonDumper 
 import flashgg.Taggers.dumperConfigTools as cfgTools
@@ -105,6 +101,6 @@ process.p1 = cms.Path(
 
 
 from flashgg.MetaData.JobConfig import customize
-customize.setDefault("maxEvents",100)
+customize.setDefault("maxEvents",15000)
 customize(process)
 

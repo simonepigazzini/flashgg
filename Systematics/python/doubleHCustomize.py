@@ -2,9 +2,10 @@ import FWCore.ParameterSet.Config as cms
 
 def variablesToDump(customize):
     var_workspace = [
-             "Mjj := dijet().M()"
+#             "Mjj := dijet().M()"
     ]
-    variables = [ "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
+    variables = [
+        "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
              "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
              "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
              "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
@@ -30,6 +31,8 @@ def variablesToDump(customize):
              "diphoton_pt := diPhoton.pt",
              "diphoton_eta := diPhoton.eta",
              "diphoton_phi := diPhoton.phi",
+             "leadingJet_btagWeight := leadJet.weight('JetBTagReshapeWeight') ",
+             "subleadingJet_btagWeight := subleadJet.weight('JetBTagReshapeWeight') ",
  
              "diHiggs_pt := getdiHiggsP4().pt()",
              "diHiggs_mass := getdiHiggsP4().M()",
@@ -57,23 +60,23 @@ def variablesToDump(customize):
              "subleadingJet_mass := subleadJet().p4().M()",
              "subleadingJet_hflav := subleadJet().hadronFlavour()",
              "subleadingJet_pflav := subleadJet().partonFlavour()",
-
-
-             "ttHMVA_MET := 0",# these variables are needed for ttH killer MVA, which has to be implemented in the producer with another mvaComputer
-             "ttHMVA_njets := 0",
-             "ttHMVA_Xtt0 :=0 ",
-             "ttHMVA_Xtt1 :=0 ",
-             "ttHMVA_MjjW0 :=0 ",
-             "ttHMVA_MjjW1 :=0 ",
-             "ttHMVA_Mjjbt0 :=0 ",
-             "ttHMVA_Mjjbt1 :=0 ",
-             "ttHMVA_leadingMuon :=0 ",
-             "ttHMVA_subleadingMuon :=0 ",
-             "ttHMVA_nmus :=0 ",
-             "ttHMVA_leadingElectron :=0 ",
-             "ttHMVA_subleadingElectron :=0 ",
-             "ttHMVA_nelecs :=0 ",
-             "ttHHHbggMVA := 0",
+#
+#
+#             "ttHMVA_MET := 0",# these variables are needed for ttH killer MVA, which has to be implemented in the producer with another mvaComputer
+#             "ttHMVA_njets := 0",
+#             "ttHMVA_Xtt0 :=0 ",
+#             "ttHMVA_Xtt1 :=0 ",
+#             "ttHMVA_MjjW0 :=0 ",
+#             "ttHMVA_MjjW1 :=0 ",
+#             "ttHMVA_Mjjbt0 :=0 ",
+#             "ttHMVA_Mjjbt1 :=0 ",
+#             "ttHMVA_leadingMuon :=0 ",
+#             "ttHMVA_subleadingMuon :=0 ",
+#             "ttHMVA_nmus :=0 ",
+#             "ttHMVA_leadingElectron :=0 ",
+#             "ttHMVA_subleadingElectron :=0 ",
+#             "ttHMVA_nelecs :=0 ",
+#             "ttHHHbggMVA := 0",
     ]
     if customize.doBJetRegression : variables +=[
              "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
