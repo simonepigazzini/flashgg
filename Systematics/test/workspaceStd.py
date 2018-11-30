@@ -6,6 +6,7 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
+import flashgg.Systematics.settings as settings
 
 # SYSTEMATICS SECTION
 dropVBFInNonGold = False  # for 2015 only!
@@ -32,15 +33,6 @@ else:
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
-MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
-MUON_ISO = "LooseRel" #{ LooseID : ["LooseRel"],MediumID:["LooseRel", "TightRel"] , TrkHighPtID:["LooseRelTk", "TightRelTk"], TightIDandIPCut:["LooseRel", "TightRel"], HighPtIDandIPCut:["LooseRelTk", "TightRelTk"] }
-
-from flashgg.Systematics.SystematicsCustomize import *
-jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=MUON_ID , MUON_ISO=MUON_ISO)
-if dropVBFInNonGold:
-    process.flashggVBFTag.SetArbitraryNonGoldMC = True
-    process.flashggVBFTag.DropNonGoldData = True
-modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
 systlabels = [""]
 phosystlabels = []
@@ -67,6 +59,12 @@ customize.options.register('doubleHReweightTarget',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.int,
                            'doubleHReweightTarget'
+                           )
+customize.options.register('year',
+                           '2016',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'year'
                            )
 customize.options.register('doDoubleHTag',
                            False,
@@ -147,6 +145,8 @@ customize.options.register('verboseSystDump',
                            'verboseSystDump'
                            )
 
+
+
 print "Printing defaults"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
@@ -157,6 +157,24 @@ from flashgg.MetaData.JobConfig import customize
 customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",1.00e+3)
 customize.parse()
+
+settings.init(customize.year)
+year = settings.year
+if year == "2016" :
+    process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
+elif year == "2017" :  
+    process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
+
+MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
+MUON_ISO = "LooseRel" #{ LooseID : ["LooseRel"],MediumID:["LooseRel", "TightRel"] , TrkHighPtID:["LooseRelTk", "TightRelTk"], TightIDandIPCut:["LooseRel", "TightRel"], HighPtIDandIPCut:["LooseRelTk", "TightRelTk"] }
+
+from flashgg.Systematics.SystematicsCustomize import *
+jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=MUON_ID , MUON_ISO=MUON_ISO)
+if dropVBFInNonGold:
+    process.flashggVBFTag.SetArbitraryNonGoldMC = True
+    process.flashggVBFTag.DropNonGoldData = True
+modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
+
 print "Printing options"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
@@ -420,10 +438,12 @@ process.source = cms.Source ("PoolSource",
 #"root://xrootd-cms.infn.it//store/group/phys_higgs/cmshgg/micheli/flashgg/LegacyReReco-20180629/1/DoubleEG/LegacyReReco-20180629-1-v0-Run2016E-07Aug17-v1/180629_143351/0000/myMicroAODOutputFile_44.root"
 #"root://xrootd-cms.infn.it//store/group/phys_higgs/cmshgg/micheli/flashgg/LegacyReReco-20180629/1/DoubleEG/LegacyReReco-20180629-1-v0-Run2016E-07Aug17-v1/180629_143351/0000/myMicroAODOutputFile_247.root"
 #"root://cms-xrd-global.cern.ch//store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_extra4/1/GluGluToHHTo2B2G_node_13_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg_extra4-1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180528_183109/0000/myMicroAODOutputFile_1.root"
-"root://cms-xrd-global.cern.ch////store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_1.root"
+#"root://cms-xrd-global.cern.ch////store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_1.root"
 #"root://cms-xrd-global.cern.ch////store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_253.root"
 #"root://cms-xrd-global.cern.ch////store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall17-3_2_0/RunIIFall17-3_2_0/GluGluToHHTo2B2G_node_7_13TeV-madgraph_correctedcfg/RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/181011_162430/0000/myMicroAODOutputFile_3.root"
 #"root://cms-xrd-global.cern.ch///store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall17-3_2_0/RunIIFall17-3_2_0/GluGluToHHTo2B2G_node_12_13TeV-madgraph_correctedcfg/RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/181011_161750/0000/myMicroAODOutputFile_1.root"
+#"root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_3.root"
+"root://cms-xrd-global.cern.ch///store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_478.root"
 ))
 
 process.TFileService = cms.Service("TFileService",

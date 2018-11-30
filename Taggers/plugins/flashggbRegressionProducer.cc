@@ -117,15 +117,9 @@ namespace flashgg {
     bRegressionProducer::bRegressionProducer( const ParameterSet &iConfig ) :
         inputTagJets_( iConfig.getParameter<edm::InputTag>( "JetTag" )) ,
         rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
-        #ifdef CMSSW9
-           bRegressionWeightfileName_( iConfig.getUntrackedParameter<std::string>("bRegressionWeightfile_2017")),
-           y_mean_(iConfig.getUntrackedParameter<double>("y_mean_2017")),
-           y_std_(iConfig.getUntrackedParameter<double>("y_std_2017"))
-        #elif CMSSW8
-           bRegressionWeightfileName_( iConfig.getUntrackedParameter<std::string>("bRegressionWeightfile")),
-           y_mean_(iConfig.getUntrackedParameter<double>("y_mean")),
-           y_std_(iConfig.getUntrackedParameter<double>("y_std"))
-        #endif 
+        bRegressionWeightfileName_( iConfig.getUntrackedParameter<std::string>("bRegressionWeightfile")),
+        y_mean_(iConfig.getUntrackedParameter<double>("y_mean")),
+        y_std_(iConfig.getUntrackedParameter<double>("y_std"))
     {
         jetToken_= consumes<View<flashgg::Jet> >(inputTagJets_);
 

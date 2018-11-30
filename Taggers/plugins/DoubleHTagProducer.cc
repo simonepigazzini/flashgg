@@ -59,15 +59,16 @@ namespace flashgg {
         vector<double>mjjBoundaries_;
         vector<double>mjjBoundariesLower_;
         vector<double>mjjBoundariesUpper_;
-        std::string bTagType_;
+        vector<std::string> bTagType_;
         bool       useJetID_;
         string     JetIDLevel_;        
 
-        flashgg::MVAComputer<DoubleHTag> mvaComputer_;
+        GlobalVariablesDumper globalVariablesDumper_;
+        MVAComputer<DoubleHTag> mvaComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
         int multiclassSignalIdx_;
 
-        edm::FileInPath MVAFlatteningFileName_;
+        FileInPath MVAFlatteningFileName_;
         TFile * MVAFlatteningFile_;
         TGraph * MVAFlatteningCumulative_;
     };
@@ -82,10 +83,11 @@ namespace flashgg {
         vetoConeSize_( iConfig.getParameter<double> ( "VetoConeSize" ) ),
         minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
         maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
-        bTagType_( iConfig.getUntrackedParameter<std::string>( "BTagType") ),
+        bTagType_( iConfig.getParameter<vector<std::string>>( "BTagType") ),
         useJetID_( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
         JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
-        mvaComputer_( iConfig.getParameter<edm::ParameterSet>("MVAConfig") )
+        globalVariablesDumper_(iConfig.getParameter<edm::ParameterSet>("globalVariables")),
+        mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"),  &globalVariablesDumper_)
     {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
         mvaBoundaries_ = iConfig.getParameter<vector<double > >( "MVABoundaries" );
@@ -196,8 +198,10 @@ namespace flashgg {
         
         // MC truth
         TagTruthBase truth_obj;
+        double genMhh=0.;
         if( ! evt.isRealData() ) {
             Handle<View<reco::GenParticle> > genParticles;
+            std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
             evt.getByToken( genParticleToken_, genParticles );
             Point higgsVtx(0.,0.,0.);
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
@@ -206,6 +210,19 @@ namespace flashgg {
                     higgsVtx = genParticles->ptrAt( genLoop )->vertex();
                     break;
                 }
+            }
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+               edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+               if (selHiggses.size()>1) break;
+              if (genPar->pdgId()==25 && genPar->isHardProcess()){
+                  selHiggses.push_back(genPar);
+              }   
+            }
+            if (selHiggses.size()==2){
+                TLorentzVector H1,H2;
+                H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
+                H2.SetPtEtaPhiE(selHiggses[1]->p4().pt(),selHiggses[1]->p4().eta(),selHiggses[1]->p4().phi(),selHiggses[1]->p4().energy());
+                genMhh  = (H1+H2).M();
             }
             truth_obj.setGenPV( higgsVtx );
             truths->push_back( truth_obj );
@@ -249,7 +266,6 @@ namespace flashgg {
             for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
                 auto jet = jets->ptrAt(ijet);
                 if (jet->pt()<minJetPt_ || fabs(jet->eta())>maxJetEta_)continue;
-                //if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME threshold might not be 0?
                 if( useJetID_ ){
                     if( JetIDLevel_ == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
                     if( JetIDLevel_ == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
@@ -270,7 +286,9 @@ namespace flashgg {
                     auto jet_2 = cleaned_jets[kjet];
                     auto dijet_mass = (jet_1->p4()+jet_2->p4()).mass(); 
                     if (dijet_mass<mjjBoundaries_[0] || dijet_mass>mjjBoundaries_[1]) continue;
-                    double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);
+                    double sumbtag=0.;
+                    for (unsigned int btag_num=0;btag_num<bTagType_.size();btag_num++)
+                        sumbtag+=jet_1->bDiscriminator(bTagType_[btag_num]) + jet_2->bDiscriminator(bTagType_[btag_num]);
                     if (sumbtag > sumbtag_ref) {
                         hasDijet = true;
                         sumbtag_ref = sumbtag;
@@ -293,6 +311,7 @@ namespace flashgg {
 
             // compute extra variables here
             tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
+            tag_obj.setGenMhh( genMhh );
             
             if(doSigmaMDecorr_){
                 tag_obj.setSigmaMDecorrTransf(transfEBEB_,transfNotEBEB_);
