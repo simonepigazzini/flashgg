@@ -6,12 +6,12 @@ from flashgg.Taggers.flashggTags_cff import flashggUnpackedJets
 import os
 import flashgg.Systematics.settings as settings
 
-bRegressionWeightfile_str = cms.untracked.string(os.environ["CMSSW_BASE"]+"flashgg/Taggers/data/DNN_models/model-18")
+bRegressionWeightfile_str = cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/model-18.pb")
 y_mean_str = cms.untracked.double(1.0454729795455933)
 y_std_str = cms.untracked.double( 0.31628304719924927) 
 year = settings.year
 if year == "2016":
-   bRegressionWeightfile_str = cms.untracked.string(os.environ["CMSSW_BASE"]+"flashgg/Taggers/data/DNN_models/model-18")
+   bRegressionWeightfile_str = cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/model-18.pb")
    y_mean_str = cms.untracked.double(1.0454729795455933)
    y_std_str = cms.untracked.double( 0.31628304719924927) 
 elif year == "2017":

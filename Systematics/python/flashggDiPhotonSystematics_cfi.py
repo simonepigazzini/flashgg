@@ -857,40 +857,74 @@ MCScaleGain1EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          Debug = cms.untracked.bool(False)
          )
 
+
+
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
                 SystMethods2D = cms.VPSet(),
-                # the number of syst methods matches the number of nuisance parameters
-                # assumed for a given systematic uncertainty and is NOT required
-                # to match 1-to-1 the number of bins above.
-                SystMethods = cms.VPSet(
-                    MCScaleHighR9EB,
-                    MCScaleLowR9EB,
-                    MCScaleHighR9EE,
-                    MCScaleLowR9EE,
-                    MCScaleGain6EB_EGM,
-                    MCScaleGain1EB_EGM,
-                    MaterialCentralBarrel,
-                    MaterialOuterBarrel,
-                    MaterialForward,
-                    ShowerShapeHighR9EB,
-                    ShowerShapeHighR9EE,
-                    ShowerShapeLowR9EB,
-                    ShowerShapeLowR9EE,
-                    FNUFEB,
-                    FNUFEE,
-                    MCSmearHighR9EE,
-                    MCSmearLowR9EE,
-                    MCSmearHighR9EB,
-                    MCSmearLowR9EB,
-                    MvaShift,
-                    PreselSF,
-                    electronVetoSF,
-                    TriggerWeight,
-                    LooseMvaSF,
-                    SigmaEOverEShift,
-                    SigmaEOverESmearing,
-                    FracRVWeight,
-                    FracRVNvtxWeight
-                )
+                SystMethods = cms.VPSet()
 )
+
+import flashgg.Systematics.settings as settings
+year = settings.year
+if year == "2016":
+   import flashgg.Systematics.flashggDiPhotonSystematics2016_cfi as diphotons2016
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCScaleHighR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCScaleLowR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCScaleHighR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCScaleLowR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCScaleGain6EB_EGM)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCScaleGain1EB_EGM)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MaterialCentralBarrel)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MaterialOuterBarrel)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MaterialForward)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.ShowerShapeHighR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.ShowerShapeHighR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.ShowerShapeLowR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.ShowerShapeLowR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.FNUFEB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.FNUFEE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCSmearHighR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCSmearLowR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCSmearHighR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MCSmearLowR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.MvaShift)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.PreselSF)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.electronVetoSF)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.TriggerWeight)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.LooseMvaSF)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.SigmaEOverEShift)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.SigmaEOverESmearing)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.FracRVWeight)
+   flashggDiPhotonSystematics.SystMethods.append(diphotons2016.FracRVNvtxWeight)
+elif year == "2017":
+   flashggDiPhotonSystematics.SystMethods.append(MCScaleHighR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(MCScaleLowR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(MCScaleHighR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(MCScaleLowR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(MCScaleGain6EB_EGM)
+   flashggDiPhotonSystematics.SystMethods.append(MCScaleGain1EB_EGM)
+   flashggDiPhotonSystematics.SystMethods.append(MaterialCentralBarrel)
+   flashggDiPhotonSystematics.SystMethods.append(MaterialOuterBarrel)
+   flashggDiPhotonSystematics.SystMethods.append(MaterialForward)
+   flashggDiPhotonSystematics.SystMethods.append(ShowerShapeHighR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(ShowerShapeHighR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(ShowerShapeLowR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(ShowerShapeLowR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(FNUFEB)
+   flashggDiPhotonSystematics.SystMethods.append(FNUFEE)
+   flashggDiPhotonSystematics.SystMethods.append(MCSmearHighR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(MCSmearLowR9EE)
+   flashggDiPhotonSystematics.SystMethods.append(MCSmearHighR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(MCSmearLowR9EB)
+   flashggDiPhotonSystematics.SystMethods.append(MvaShift)
+   flashggDiPhotonSystematics.SystMethods.append(PreselSF)
+   flashggDiPhotonSystematics.SystMethods.append(electronVetoSF)
+   flashggDiPhotonSystematics.SystMethods.append(TriggerWeight)
+   flashggDiPhotonSystematics.SystMethods.append(LooseMvaSF)
+   flashggDiPhotonSystematics.SystMethods.append(SigmaEOverEShift)
+   flashggDiPhotonSystematics.SystMethods.append(SigmaEOverESmearing)
+   flashggDiPhotonSystematics.SystMethods.append(FracRVWeight)
+   flashggDiPhotonSystematics.SystMethods.append(FracRVNvtxWeight)
+
+

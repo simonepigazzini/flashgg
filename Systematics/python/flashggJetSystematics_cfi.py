@@ -286,7 +286,7 @@ def createJECESource(process):
                                #connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
                                #connect = cms.string('sqlite_file:%s/Summer16_23Sep2016V4_MC.db' % datadir)
                               # connect = cms.string('sqlite_file:%s/Fall17_17Nov2017_V6_MC.db' % datadir)
-                               connect = cms.string('frontier://FrontierPrep/CMS_CONDITIONS')
+                               connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
                                )                               
     process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
@@ -328,7 +328,7 @@ def createJERESource(process):
                                #connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
 #                               connect = cms.string('sqlite_file:%s/Summer16_23Sep2016V4_MC.db' % datadir)
                                #connect = cms.string('sqlite_file:%s/Fall17_17Nov2017_V6_MC.db' % datadir) 
-                               connect = cms.string('frontier://FrontierPrep/CMS_CONDITIONS')
+                               connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
                                )
     process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
 

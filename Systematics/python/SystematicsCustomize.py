@@ -223,9 +223,9 @@ def customizeJetSystematicsForData(process):
 #    process.jec.toGet[0].tag = cms.string('JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK4PFchs')
 
      # Update this hack for 2017 data
-    from os import environ
-    process.jec.connect = cms.string('sqlite_file:%s/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017BCDEF_V6_DATA.db' % environ['CMSSW_BASE'])
-    process.jec.toGet[0].tag = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs')
+  #  from os import environ
+ #   process.jec.connect = cms.string('sqlite_file:%s/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017BCDEF_V6_DATA.db' % environ['CMSSW_BASE'])
+ #   process.jec.toGet[0].tag = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs')
 
 def useEGMTools(process):
     # remove old scales
