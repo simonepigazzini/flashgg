@@ -70,6 +70,10 @@ def createStandardSystematicsProducers(process, MUON_ID="Loose" , MUON_ISO="Loos
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
     process.load("flashgg.Systematics.flashggMetSystematics_cfi")
 
+
+    import flashgg.Systematics.flashggDiPhotonSystematics_cfi as diPhotons_syst
+    diPhotons_syst.SetupDiPhotonSystematics( process )
+
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
     muon_sf.SetupMuonScaleFactors( process , MUON_ID , MUON_ISO )
     

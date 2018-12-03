@@ -1,0 +1,12 @@
+{
+    "processes" : {
+	"DoubleEG" : [
+	    "/DoubleEG/spigazzi-RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-Run2017B-31Mar2018-v1-4445f8b8434638d185ab881c99726e95/USER",
+	    "/DoubleEG/spigazzi-RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-Run2017C-31Mar2018-v1-4445f8b8434638d185ab881c99726e95/USER",
+	    "/DoubleEG/spigazzi-RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-Run2017D-31Mar2018-v1-4445f8b8434638d185ab881c99726e95/USER",
+	    "/DoubleEG/spigazzi-RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-Run2017E-31Mar2018-v1-4445f8b8434638d185ab881c99726e95/USER",
+	    "/DoubleEG/spigazzi-RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-Run2017F-09May2018-v1-b20a6d6568e74bd35d904b62a0ede15e/USER"
+	]
+   },
+	"cmdLine" : "campaign=RunIIFall17-3_2_0 targetLumi=41.5 processId=Data processType=data lumiMask=/shome/nchernya/CMSSW_9_4_9/src/flashgg/MetaData/work/jsons/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt" 
+}
