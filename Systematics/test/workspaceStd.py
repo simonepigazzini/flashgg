@@ -445,6 +445,7 @@ process.source = cms.Source ("PoolSource",
 "root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_3.root"
 #"root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_1.root"
 #"root://cms-xrd-global.cern.ch///store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_478.root"
+#"root://cms-xrd-global.cern.ch///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_extra_5/1/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIIMoriond17_HHbbgg_breg_extra_5-1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180530_092552/0000/myMicroAODOutputFile_6.root"
 ))
 
 process.TFileService = cms.Service("TFileService",

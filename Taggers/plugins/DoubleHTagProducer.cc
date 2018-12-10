@@ -266,6 +266,10 @@ namespace flashgg {
             for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
                 auto jet = jets->ptrAt(ijet);
                 if (jet->pt()<minJetPt_ || fabs(jet->eta())>maxJetEta_)continue;
+                double btag=0.;
+                for (unsigned int btag_num=0;btag_num<bTagType_.size();btag_num++)
+                        btag+=jet->bDiscriminator(bTagType_[btag_num]); 
+                if (btag<0) continue;//FIXME threshold might not be 0? For CMVA and DeepCSV it is 0.
                 if( useJetID_ ){
                     if( JetIDLevel_ == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
                     if( JetIDLevel_ == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;

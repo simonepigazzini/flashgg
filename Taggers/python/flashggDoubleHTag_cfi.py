@@ -36,7 +36,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    PhotonIDCut = cms.double(0.2),#this is loose id for 2016
                                    PhotonElectronVeto =cms.untracked.vint32(1, 1), #0: Pho1, 1: Pho2
 
-                                   MinJetPt   = cms.double(20.),
+                                   MinJetPt   = cms.double(25.),
                                    MaxJetEta   = cms.double(2.5),
                                    MJJBoundaries = cms.vdouble(70.,190.),
                                   # BTagType = cms.untracked.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'), #string for btag algorithm
