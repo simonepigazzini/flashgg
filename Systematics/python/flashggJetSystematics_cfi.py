@@ -11,12 +11,15 @@ JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Sum
 JR_PtResolution_version = "JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs"
 JR_SF_version = "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs"
 year = settings.year
+process_type = settings.process_type
 if year == "2016":
-   JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs"    
+   JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs"
+   if process_type == 'Data' : JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK4PFchs"
    JR_PtResolution_version = "JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs"
    JR_SF_version = "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs"
 elif year == "2017":
    JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Fall17_17Nov2017_V6_MC_AK4PFchs"
+   if process_type == 'Data' : JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs"
    JR_PtResolution_version = "JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs"
    JR_SF_version = "JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs"
 

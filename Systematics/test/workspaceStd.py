@@ -158,12 +158,19 @@ customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",1.00e+3)
 customize.parse()
 
-settings.init(customize.year)
+process_type = 'Sim'
+if customize.processId == 'Data' : process_type = customize.processId
+settings.init(customize.year,process_type)
 year = settings.year
-if year == "2016" :
+process_type = settings.process_type
+if year == "2016" and process_type != "Data":
     process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
-elif year == "2017" :  
+elif year == "2016" and process_type == "Data":
+    process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
+elif year == "2017" and process_type != "Data":  
     process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
+elif year == "2017" and process_type == "Data":  
+    process.GlobalTag.globaltag = '94X_dataRun2_ReReco_EOY17_v6'
 
 MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
 MUON_ISO = "LooseRel" #{ LooseID : ["LooseRel"],MediumID:["LooseRel", "TightRel"] , TrkHighPtID:["LooseRelTk", "TightRelTk"], TightIDandIPCut:["LooseRel", "TightRel"], HighPtIDandIPCut:["LooseRelTk", "TightRelTk"] }
@@ -442,10 +449,13 @@ process.source = cms.Source ("PoolSource",
 #"root://cms-xrd-global.cern.ch////store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_253.root"
 #"root://cms-xrd-global.cern.ch////store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall17-3_2_0/RunIIFall17-3_2_0/GluGluToHHTo2B2G_node_7_13TeV-madgraph_correctedcfg/RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/181011_162430/0000/myMicroAODOutputFile_3.root"
 #"root://cms-xrd-global.cern.ch///store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall17-3_2_0/RunIIFall17-3_2_0/GluGluToHHTo2B2G_node_12_13TeV-madgraph_correctedcfg/RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/181011_161750/0000/myMicroAODOutputFile_1.root"
-"root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_3.root"
+#"root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_3.root"
 #"root://xrootd-cms.infn.it///store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_1.root"
 #"root://cms-xrd-global.cern.ch///store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_478.root"
 #"root://cms-xrd-global.cern.ch///store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_extra_5/1/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIIMoriond17_HHbbgg_breg_extra_5-1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180530_092552/0000/myMicroAODOutputFile_6.root"
+#"root://cms-xrd-global.cern.ch///store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall17-3_2_0/RunIIFall17-3_2_0/DoubleEG/RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-Run2017E-31Mar2018-v1/181008_110407/0001/myMicroAODOutputFile_1661.root"
+#"root://cms-xrd-global.cern.ch///store/user/micheli/MicroAOD/ReMiniAOD2016-DeepCSV-bRegression/ReMiniAOD2016-DeepCSV-bRegression/prod-uAOD-300-11-g22a116d/DoubleEG/ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016C-03Feb2017-v1/180928_153054/0000/myMicroAODOutputFile_420.root"
+"root://cms-xrd-global.cern.ch//store/user/micheli/MicroAOD/ReMiniAOD2016-DeepCSV-bRegression/ReMiniAOD2016-DeepCSV-bRegression/prod-uAOD-300-11-g22a116d/DoubleEG/ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016G-03Feb2017-v1/180928_153415/0000/myMicroAODOutputFile_57.root"
 ))
 
 process.TFileService = cms.Service("TFileService",
@@ -578,8 +588,14 @@ for tag in tagList:
                            )
 
 # Require standard diphoton trigger
+trigger_data = 'HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*'
+if year=='2016':
+    trigger_data = 'HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*'
+elif year=='2017':
+    trigger_data = 'HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*'
+
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
+process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("%s"%trigger_data,
 #                                                                "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1",
 #                                                                "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1"
                                                                 ))

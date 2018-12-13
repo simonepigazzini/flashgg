@@ -50,6 +50,7 @@ namespace flashgg {
         edm::FileInPath sigmaMDecorrFile_;
         std::vector<int> photonElectronVeto_;
 
+
         DecorrTransform* transfEBEB_;
         DecorrTransform* transfNotEBEB_;
 
@@ -71,6 +72,7 @@ namespace flashgg {
         FileInPath MVAFlatteningFileName_;
         TFile * MVAFlatteningFile_;
         TGraph * MVAFlatteningCumulative_;
+        double MVAscaling_;
     };
 
     DoubleHTagProducer::DoubleHTagProducer( const ParameterSet &iConfig ) :
@@ -113,6 +115,7 @@ namespace flashgg {
             MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
             MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
         }
+        MVAscaling_ = iConfig.getParameter<double>("MVAscaling");
 
         doSigmaMDecorr_ = iConfig.getUntrackedParameter<unsigned int>("DoSigmaMDecorr");
         if(doSigmaMDecorr_){
@@ -325,7 +328,8 @@ namespace flashgg {
             std::vector<float> mva_vector = mvaComputer_.predict_prob(tag_obj);
             double mva = mva_vector[multiclassSignalIdx_];
             if(doMVAFlattening_){
-                mva = MVAFlatteningCumulative_->Eval(mva);
+                double mvaScaled = mva/(mva*(1.-MVAscaling_)+MVAscaling_);
+                mva = MVAFlatteningCumulative_->Eval(mvaScaled);
             }
 
             tag_obj.setMVA( mva );

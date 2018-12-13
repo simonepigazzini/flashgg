@@ -9,14 +9,22 @@ from flashgg.Taggers.globalVariables_cff import globalVariables
 
 import flashgg.Systematics.settings as settings
 year = settings.year
+#default values first
 year_norm = 0
 jetPUID = 'Loose'
+weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml"# path to TMVA weights
+MVAscalingValue=cms.double(1.)#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
+
 if year == "2016":
     year_norm = 0
     jetPUID = 'Loose'
+    weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml", 
+    MVAscalingValue=1.
 elif year == "2017":
     year_norm = 1
     jetPUID = 'Tight2017'
+    weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2017.weights.xml", 
+    MVAscalingValue=1.011026
 
 
 
@@ -51,15 +59,16 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    MJJBoundariesUpper = cms.vdouble(150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
-                                                        weights=cms.FileInPath("flashgg/Taggers/data/HHTagger/training_with_28_10_2018_common2017.weights.xml"), # path to TMVA weights
+                                                        weights=cms.FileInPath("%s"%weightsFile), 
                                                         regression=cms.bool(False), # this is not a regression
                                                         multiclass=cms.bool(True), # this is multiclass 
                                                         multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
                                                         ),
 
-                                   doMVAFlattening=cms.bool(False),#do transformation of cumulative to make it flat
-                                   doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
-                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_2016_2017_20181028_common.root"),#FIXME, this should be optional, is it?
+                                   doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
+                                   MVAscaling=cms.double(MVAscalingValue),
+                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
+                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20181210_common_2016_2017.root"),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables
                                   ) 
 
@@ -78,13 +87,14 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "customSubLeadingPhotonIDMVA := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
                        "leadingPhotonSigOverE := diPhoton.leadingPhoton.sigEOverE",
                        "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
-                       "sigmaMOverMDecorr := getSigmaMDecorr()",
+                     #  "sigmaMOverMDecorr := getSigmaMDecorr()",
+                       "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
                        "PhoJetMinDr := getPhoJetMinDr()",
                        "rho := global.rho",
                        "(leadingJet_bRegNNResolution*1.4826) := leadJet().userFloat('bRegNNResolution')*1.4826",
                        "(subleadingJet_bRegNNResolution*1.4826) := subleadJet().userFloat('bRegNNResolution')*1.4826",
                        "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826",
-                       "year := %d"%year_norm,
+                     #  "year := %d"%year_norm,
                        ]
                       )
 

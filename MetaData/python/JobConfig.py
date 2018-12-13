@@ -2,6 +2,10 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
 import FWCore.ParameterSet.Config as cms
 
+#import flashgg.Systematics.settings as settings
+#year = settings.year
+year = "2017" 
+
 
 class JobConfig(object):
     
@@ -152,6 +156,8 @@ class JobConfig(object):
         except Exception:
             print "Failed to load 94X_mc2017 mixing"
             
+        self.pu_distribs_hack_2017 = {  }
+
         try:
             import importlib
             from os import listdir,environ
@@ -165,7 +171,7 @@ class JobConfig(object):
                     print fn,mn
                     m = importlib.import_module("flashgg.MetaData.%s.%s" % (mixdir,mn))
                     kn = mn.replace("mix_2017MC_","")
-                    self.pu_distribs[kn] = m.mix.input.nbPileupEvents
+                    self.pu_distribs_hack_2017[kn] = m.mix.input.nbPileupEvents
         except Exception,e:
             print "failed to load hacky 94X mixing by dataset"
             raise e
@@ -292,12 +298,15 @@ class JobConfig(object):
                             if not samplepu:
 #                                print dsetname
 #                                print self.pu_distribs.keys()
-                                hack2017 = True
+#                                hack2017 = True
                                 found_hack2017 = False
-                                if hack2017:
+#                                if hack2017:
+                                if year=="2017":
                                     print dsetname.split("/")[1]
-                                    print self.pu_distribs.keys()
-                                    matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
+                                   # print self.pu_distribs.keys()
+                                    print self.pu_distribs_hack_2017.keys()
+                                   # matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
+                                    matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs_hack_2017.keys())
                                     if len(matches) == 1:
                                         found_hack2017 = True
                                         print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
@@ -410,7 +419,8 @@ class JobConfig(object):
             self.readProcessIdMap(self.options.processIdMap)
         
         if self.useAAA:
-            self.filePrepend = "root://xrootd-cms.infn.it/"
+       #     self.filePrepend = "root://xrootd-cms.infn.it/"
+            self.filePrepend = "root://cms-xrd-global.cern.ch/"
         elif self.useEOS:
             self.filePrepend = "root://eoscms.cern.ch//eos/cms"
         
