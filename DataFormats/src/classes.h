@@ -46,12 +46,17 @@
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 #include "flashgg/DataFormats/interface/DoubleHTag.h"
+#include "flashgg/DataFormats/interface/TensorFlowWrapperObj.h"
 
 #include <vector>
 #include <map>
 
 namespace  {
     struct dictionary {
+        flashgg::TensorFlowWrapperObj                                         fgg_dnn_obj;
+        std::vector<edm::Ptr<flashgg::TensorFlowWrapperObj> >                 vec_fgg_dnn_obj;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::TensorFlowWrapperObj> > >  wrp_vec_fgg_dnn_obj;
+
         flashgg::WeightedObject                                             fgg_obj;
         
         flashgg::PDFWeightObject                                             fgg_pobj;

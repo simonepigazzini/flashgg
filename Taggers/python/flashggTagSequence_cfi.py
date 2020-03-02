@@ -39,4 +39,28 @@ def flashggPrepareTagSequence(process, options):
                                       * flashggTagSorter
                                   )
 
+
+    process.tf_dummy_source = cms.ESSource("EmptyESSource",
+                                           recordName = cms.string("flashgg::TensorFlowWrapperRcd"),
+                                           firstValid = cms.vuint32(1),
+                                           iovIsRunNotTime = cms.bool(True)
+                                       )
+
+    process.FlashggTensorFlowContainer = cms.ESProducer("FlashggTensorFlowObjectESProducer",
+                                                        nn_configs = cms.VPSet(
+                                                            cms.PSet(
+                                                                nn_name = cms.string("TTHDiphoDNN"),
+                                                                weights_file = cms.FileInPath("flashgg/Taggers/data/Hadronic_ttHHadronic_ttH_vs_dipho_v3.10_8Oct2019_weights.pb")
+                                                            ),
+                                                            cms.PSet(
+                                                                nn_name = cms.string("TTHttGGDNN"),
+                                                                weights_file = cms.FileInPath("flashgg/Taggers/data/Hadronic_ttHHadronic_ttH_vs_ttGG_v3.10_8Oct2019_weights.pb")
+                                                            ),
+cms.PSet(
+                                                                nn_name = cms.string("TTHLeptonicDNN"),
+                                                                weights_file = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_ttGG_v3.10_8Oct2019_weights.pb")
+                                                            )
+                                                        )
+                                                    )
+
     return flashggTagSequence

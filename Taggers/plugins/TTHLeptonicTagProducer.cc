@@ -1,6 +1,8 @@
 #include "FWCore/Framework/interface/EDProducer.h"
+#include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -213,6 +215,7 @@ namespace flashgg {
 
         BDT_resolvedTopTagger *topTagger;
         TTH_DNN_Helper* dnn;
+        ESGetToken<TensorFlowWrapperObj, TensorFlowWrapperRcd> tfContainerToken_;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -397,7 +400,8 @@ namespace flashgg {
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
+        tfContainerToken_(esConsumes<TensorFlowWrapperObj, TensorFlowWrapperRcd> (edm::ESInputTag("FlashggTensorFlowContainer","")))
     {
         systematicsLabels.push_back("");
         modifySystematicsWorkflow = iConfig.getParameter<bool> ( "ModifySystematicsWorkflow" );
@@ -610,7 +614,7 @@ namespace flashgg {
 
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
-            dnn = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn = new TTH_DNN_Helper();
             dnn->SetInputShapes(19, 9, 8);
             dnn->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
         }
@@ -650,7 +654,7 @@ namespace flashgg {
         return -1; // Does not pass, object will not be produced
     }
 
-    void TTHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
+    void TTHLeptonicTagProducer::produce( Event &evt, const EventSetup & setup )
     {
         Handle<int> stage0cat, stage1cat, njets;
         Handle<float> pTH, pTV;
@@ -1246,8 +1250,10 @@ namespace flashgg {
                 global_features[18] = lepton_nTight_;
 
                 if (useLargeMVAs) {
+                    auto& tf_container = setup.getData(tfContainerToken_);
+
                     dnn->SetInputs(tagJets, Muons, Electrons, global_features);
-                    dnn_score_0_ = dnn->EvaluateDNN();
+                    dnn_score_0_ = dnn->EvaluateDNN(const_cast<tensorflow::Session*>(tf_container.GetSession("TTHLeptonicDNN")));
                 }
 
                 vector<float> mvaEval; 

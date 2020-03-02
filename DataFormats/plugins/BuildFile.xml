@@ -1,0 +1,8 @@
+<library file="*.cc" name="FlashggESProducersPlugins">
+<use name="FWCore/Utilities"/>
+<use name="FWCore/Framework"/>
+<use name="FWCore/ParameterSet"/>
+<use name="PhysicsTools/TensorFlow"/>
+<use name="flashgg/DataFormats"/>
+<flags   EDM_PLUGIN="1"/>
+</library>
