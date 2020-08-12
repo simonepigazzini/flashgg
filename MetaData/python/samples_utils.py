@@ -228,7 +228,7 @@ class SamplesManager(object):
         if not self.parallel_:
             self.parallel_ = Parallel(200,self.queue_,maxThreads=self.maxThreads_,asyncLsf=True)
         
-        ret,out = self.parallel_.run("/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select",["find",dsetName],interactive=True)[2]
+        ret,out = self.parallel_.run("eos root://eoscms.cern.ch find",[dsetName],interactive=True)[2]
         files = []
         for line in out.split("\n"):
             if line.endswith(".root") and not "failed" in line:
@@ -511,13 +511,14 @@ class SamplesManager(object):
             #---Recover missing info
             if "dset_type" not in catalog[ dsetName ] or not catalog[ dsetName ]["dset_type"]:
                 dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
-                catalog[ dsetName ]["dset_type"] = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
+                catalog[ dsetName ]["dset_type"] = None #dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
             if ("parent_n_units" not in catalog[ dsetName ] or catalog[ dsetName ]["parent_n_units"]==None) and catalog[ dsetName ]["dset_type"] != None:
                 catalog[ dsetName ]["parent_n_units"] = self.getParentInfo(catalog[ dsetName ]["dset_type"], dsetName)
         else:
             #---First import
             dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
-            dset_type = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
+            print(dset_type)
+            dset_type = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type and len(dset_type['data'])>0 else None
             parent_info = self.getParentInfo(dset_type, dsetName) if dset_type else None
 
             catalog[ dsetName ] = { "files" : files, "parent_n_units" : parent_info, "dset_type" : dset_type }
