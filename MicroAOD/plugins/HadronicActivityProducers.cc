@@ -1,4 +1,4 @@
-#include "../interface/HadronicActivityProducer.h"
+#include "flashgg/MicroAOD/interface/HadronicActivityProducer.h"
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
